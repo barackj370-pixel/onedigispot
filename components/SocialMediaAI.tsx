@@ -22,10 +22,12 @@ interface Post {
   id: string;
   dayOfWeek: string;
   content: string;
+  description: string;
   type: 'text' | 'video';
   videoUrl?: string;
   scheduledTime: string;
   status: 'draft' | 'scheduled' | 'posting' | 'posted';
+  source: 'ai' | 'upload';
 }
 
 const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -114,7 +116,7 @@ const SocialMediaAI: React.FC = () => {
       
       const prompt = `Generate 7 high-quality social media posts (one for each day of the week) based on the topic: "${topic}". 
       Each post should be engaging, include relevant hashtags, and be optimized for platforms like ${platforms.join(', ')}.
-      Format the output as a JSON array of strings.`;
+      Format the output as a JSON array of objects with 'content' (the main post text) and 'description' (a short description of the post/video).`;
 
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
@@ -126,13 +128,15 @@ const SocialMediaAI: React.FC = () => {
 
       const generatedContent = JSON.parse(response.text || "[]");
       
-      const newPosts: Post[] = generatedContent.map((content: string, index: number) => ({
+      const newPosts: Post[] = generatedContent.map((item: any, index: number) => ({
         id: Math.random().toString(36).substring(7),
         dayOfWeek: DAYS_OF_WEEK[index % 7],
-        content,
+        content: item.content || item,
+        description: item.description || 'Auto-generated post',
         type: postType,
         scheduledTime: `09:00`,
-        status: 'draft'
+        status: 'draft',
+        source: 'ai'
       }));
 
       setPosts(newPosts);
@@ -155,7 +159,7 @@ const SocialMediaAI: React.FC = () => {
       
       let operation = await ai.models.generateVideos({
         model: 'veo-3.1-fast-generate-preview',
-        prompt: `A high-quality, professional social media video related to: ${content}. Style: Modern, clean, and engaging. Duration: 15 seconds.`,
+        prompt: `A high-quality, professional social media video related to: ${content}. Style: Modern, clean, and engaging with stylish text captions like inshot videos. Duration: 15 seconds.`,
         config: {
           numberOfVideos: 1,
           resolution: '720p',
@@ -193,6 +197,33 @@ const SocialMediaAI: React.FC = () => {
 
   const updatePostTime = (id: string, scheduledTime: string) => {
     setPosts(prev => prev.map(p => p.id === id ? { ...p, scheduledTime } : p));
+  };
+
+  const updatePostDescription = (id: string, description: string) => {
+    setPosts(prev => prev.map(p => p.id === id ? { ...p, description } : p));
+  };
+
+  const updatePostContent = (id: string, content: string) => {
+    setPosts(prev => prev.map(p => p.id === id ? { ...p, content } : p));
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      const newPost: Post = {
+        id: Math.random().toString(36).substring(7),
+        dayOfWeek: DAYS_OF_WEEK[0],
+        content: 'Check out my new video!',
+        description: 'My custom recorded video',
+        type: 'video',
+        videoUrl: url,
+        scheduledTime: '09:00',
+        status: 'draft',
+        source: 'upload'
+      };
+      setPosts(prev => [newPost, ...prev]);
+    }
   };
 
   const sharePost = async (id: string) => {
@@ -360,23 +391,30 @@ const SocialMediaAI: React.FC = () => {
                   </div>
                 )}
 
-                <button 
-                  onClick={generatePosts}
-                  disabled={isGenerating || platforms.length === 0}
-                  className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition-all disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-indigo-100"
-                >
-                  {isGenerating ? (
-                    <>
-                      <Loader2 className="animate-spin" size={20} />
-                      Generating Week...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles size={20} />
-                      Generate 7-Day Plan
-                    </>
-                  )}
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button 
+                    onClick={generatePosts}
+                    disabled={isGenerating || platforms.length === 0}
+                    className="flex-1 bg-indigo-600 text-white font-bold py-4 rounded-xl hover:bg-indigo-700 transition-all disabled:opacity-70 flex items-center justify-center gap-2 shadow-lg shadow-indigo-100"
+                  >
+                    {isGenerating ? (
+                      <>
+                        <Loader2 className="animate-spin" size={20} />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles size={20} />
+                        Generate AI Plan
+                      </>
+                    )}
+                  </button>
+                  <label className="flex-1 bg-white border-2 border-indigo-600 text-indigo-600 font-bold py-4 rounded-xl hover:bg-indigo-50 transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-indigo-100">
+                    <Video size={20} />
+                    Upload Video
+                    <input type="file" accept="video/*" className="hidden" onChange={handleFileUpload} />
+                  </label>
+                </div>
               </div>
             </div>
 
@@ -449,10 +487,26 @@ const SocialMediaAI: React.FC = () => {
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-6 mb-6">
-                      <div className="md:col-span-2">
-                        <p className="text-slate-700 leading-relaxed whitespace-pre-wrap">
-                          {post.content}
-                        </p>
+                      <div className="md:col-span-2 space-y-4">
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider">Short Description</label>
+                          <input 
+                            type="text"
+                            value={post.description}
+                            onChange={(e) => updatePostDescription(post.id, e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm font-medium"
+                            placeholder="Brief description of this post..."
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider">Post Content / Caption</label>
+                          <textarea 
+                            value={post.content}
+                            onChange={(e) => updatePostContent(post.id, e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-600 transition-all text-sm min-h-[100px] resize-y"
+                            placeholder="Write your caption here..."
+                          />
+                        </div>
                       </div>
                       <div className="md:col-span-1">
                         {post.type === 'video' ? (
