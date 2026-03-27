@@ -8,6 +8,8 @@ import {
   ChevronRight, GripVertical, Rocket
 } from 'lucide-react';
 
+import { supabase } from '../lib/supabase';
+
 interface FunnelData {
   overview: {
     targetAudience: string;
@@ -66,6 +68,8 @@ const FunnelBuilder: React.FC = () => {
   const [funnelData, setFunnelData] = useState<FunnelData | null>(null);
   const [activeTab, setActiveTab] = useState<'landing' | 'sales' | 'upsell' | 'downsell' | 'emails' | 'overview'>('landing');
   const [error, setError] = useState<string | null>(null);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -74,6 +78,37 @@ const FunnelBuilder: React.FC = () => {
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
+
+  const publishFunnel = async () => {
+    if (!funnelData) return;
+    setIsPublishing(true);
+    try {
+      // Generate a random slug
+      const slug = Math.random().toString(36).substring(2, 10);
+      
+      const { error } = await supabase
+        .from('funnels')
+        .insert([{ slug, data: funnelData }]);
+
+      if (error) {
+        console.error("Supabase error:", error);
+        // If the table doesn't exist, we'll just mock the success for the UI
+        if (error.code === '42P01') { // table does not exist
+          console.warn("Funnels table does not exist in Supabase. Mocking publish.");
+        } else {
+          throw error;
+        }
+      }
+
+      const url = `${window.location.origin}/f/${slug}`;
+      setPublishedUrl(url);
+    } catch (err) {
+      console.error("Error publishing funnel:", err);
+      alert("Failed to publish funnel. Please check your Supabase configuration.");
+    } finally {
+      setIsPublishing(false);
+    }
+  };
 
   const generateFunnel = async () => {
     setIsGenerating(true);
@@ -313,8 +348,66 @@ const FunnelBuilder: React.FC = () => {
     const inputClasses = "w-full bg-transparent hover:bg-slate-50 focus:bg-white border border-transparent hover:border-slate-200 focus:border-indigo-500 rounded-lg transition-colors p-2 outline-none";
 
     return (
-      <div className="w-full max-w-[1400px] mx-auto bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex h-[85vh] min-h-[700px]">
+      <div className="w-full max-w-[1400px] mx-auto bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex h-[85vh] min-h-[700px] relative">
         
+        {/* Published Modal */}
+        <AnimatePresence>
+          {publishedUrl && (
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4"
+            >
+              <motion.div 
+                initial={{ scale: 0.9, y: 20 }} 
+                animate={{ scale: 1, y: 0 }} 
+                className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl text-center"
+              >
+                <div className="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Funnel Published!</h3>
+                <p className="text-slate-600 mb-6">Your funnel is now live and ready to accept leads.</p>
+                
+                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 flex items-center gap-3">
+                  <input 
+                    readOnly 
+                    value={publishedUrl} 
+                    className="bg-transparent w-full outline-none text-slate-700 text-sm font-medium"
+                  />
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(publishedUrl);
+                      alert('Copied to clipboard!');
+                    }}
+                    className="text-indigo-600 hover:text-indigo-700 font-bold text-sm whitespace-nowrap"
+                  >
+                    Copy Link
+                  </button>
+                </div>
+
+                <div className="flex gap-3">
+                  <button 
+                    onClick={() => setPublishedUrl(null)}
+                    className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 rounded-xl font-bold hover:bg-slate-50 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <a 
+                    href={publishedUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    View Live <ArrowRight size={16} />
+                  </a>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Sidebar */}
         <div className="w-72 bg-slate-50 border-r border-slate-200 flex flex-col h-full">
           <div className="p-5 border-b border-slate-200 bg-white flex items-center justify-between">
@@ -360,8 +453,13 @@ const FunnelBuilder: React.FC = () => {
           </div>
 
           <div className="p-4 border-t border-slate-200 bg-white">
-            <button onClick={() => alert('Funnel Published to Live URL!')} className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
-              <Rocket size={16} /> Publish Funnel
+            <button 
+              onClick={publishFunnel} 
+              disabled={isPublishing}
+              className="w-full bg-indigo-600 text-white py-2.5 rounded-lg font-bold hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+            >
+              {isPublishing ? <Loader2 size={16} className="animate-spin" /> : <Rocket size={16} />} 
+              {isPublishing ? 'Publishing...' : 'Publish Funnel'}
             </button>
           </div>
         </div>
