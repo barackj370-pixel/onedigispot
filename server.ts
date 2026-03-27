@@ -1,14 +1,58 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
+import sgMail from '@sendgrid/mail';
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  app.use(express.json());
+
   // API routes FIRST
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
+  });
+
+  // Funnel Opt-in Endpoint
+  app.post("/api/funnels/optin", async (req, res) => {
+    const { email, slug, funnelData } = req.body;
+    
+    if (!email || !funnelData) {
+      return res.status(400).json({ error: "Missing email or funnel data" });
+    }
+
+    try {
+      // In a real app, you would save the lead to Supabase here
+      // e.g., await supabase.from('leads').insert({ funnel_slug: slug, email })
+
+      // Send the first email in the sequence using SendGrid
+      const sendgridKey = process.env.SENDGRID_API_KEY;
+      
+      if (sendgridKey && funnelData.emails && funnelData.emails.length > 0) {
+        sgMail.setApiKey(sendgridKey);
+        
+        const firstEmail = funnelData.emails[0];
+        
+        const msg = {
+          to: email,
+          from: 'info@onedigispot.com', // Must be verified in SendGrid
+          subject: firstEmail.subject,
+          text: firstEmail.body,
+          html: `<div style="font-family: sans-serif; white-space: pre-wrap;">${firstEmail.body}</div>`,
+        };
+
+        await sgMail.send(msg);
+        console.log(`Email sent to ${email} for funnel ${slug}`);
+      } else {
+        console.log("SendGrid API key not configured or no emails in sequence. Skipping email send.");
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error processing opt-in:", error);
+      res.status(500).json({ error: "Failed to process opt-in" });
+    }
   });
 
   // OAuth Mock Endpoints
