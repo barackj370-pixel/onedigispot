@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Smartphone, Globe, Cpu, PenTool, Share2, Search, Edit3, ArrowRight, Sparkles } from 'lucide-react';
+import { Smartphone, Globe, Cpu, PenTool, Share2, Search, Edit3, ArrowRight, Sparkles, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const slides = [
@@ -28,7 +28,7 @@ const slides = [
       { title: 'Logo Generator', icon: <PenTool className="w-6 h-6" />, delay: 0.1 },
       { title: 'Social Media AI', icon: <Share2 className="w-6 h-6" />, delay: 0.2 },
       { title: 'SEO Keywords', icon: <Search className="w-6 h-6" />, delay: 0.3 },
-      { title: 'SEO Writer', icon: <Edit3 className="w-6 h-6" />, delay: 0.4 }
+      { title: 'Funnel Builder', icon: <Filter className="w-6 h-6" />, delay: 0.4 }
     ]
   }
 ];
