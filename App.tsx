@@ -10,6 +10,7 @@ import SocialMediaAIPage from './pages/SocialMediaAIPage';
 import KeywordGeneratorPage from './pages/KeywordGeneratorPage';
 import ContentGeneratorPage from './pages/ContentGeneratorPage';
 import FunnelBuilderPage from './pages/FunnelBuilderPage';
+import PublishedFunnel from './pages/PublishedFunnel';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/tools/keyword-generator" element={<KeywordGeneratorPage />} />
             <Route path="/tools/content-generator" element={<ContentGeneratorPage />} />
             <Route path="/tools/funnel-builder" element={<FunnelBuilderPage />} />
+            <Route path="/f/:slug" element={<PublishedFunnel />} />
           </Routes>
         </main>
 
