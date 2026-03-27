@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -10,6 +9,7 @@ import LogoDesignerPage from './pages/LogoDesignerPage';
 import SocialMediaAIPage from './pages/SocialMediaAIPage';
 import KeywordGeneratorPage from './pages/KeywordGeneratorPage';
 import ContentGeneratorPage from './pages/ContentGeneratorPage';
+import FunnelBuilderPage from './pages/FunnelBuilderPage';
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
             <Route path="/tools/social-media-ai" element={<SocialMediaAIPage />} />
             <Route path="/tools/keyword-generator" element={<KeywordGeneratorPage />} />
             <Route path="/tools/content-generator" element={<ContentGeneratorPage />} />
+            <Route path="/tools/funnel-builder" element={<FunnelBuilderPage />} />
           </Routes>
         </main>
 
