@@ -8,12 +8,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">D</span>
-              </div>
-              <span className="text-2xl font-bold tracking-tight text-slate-900">
-                digispot<span className="text-indigo-600">.</span>
-              </span>
+              <img src="/logo.svg" alt="Onedigispot.com" className="h-16 w-auto object-contain" />
             </div>
             <p className="text-slate-500 mb-6 leading-relaxed">
               Kenya's premier digital innovation hub. We craft world-class custom applications and web platforms for global-minded organizations.
@@ -41,7 +36,7 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-slate-900 mb-6">Company</h4>
             <ul className="space-y-4 text-slate-500">
-              <li><a href="#" className="hover:text-indigo-600 transition-colors">About Digispot</a></li>
+              <li><a href="#" className="hover:text-indigo-600 transition-colors">About Onedigispot</a></li>
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Portfolio</a></li>
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Careers</a></li>
               <li><a href={import.meta.env.VITE_PRIVACY_POLICY_URL || "#"} className="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
@@ -69,7 +64,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="pt-10 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-slate-400 text-sm">
-          <p>© {new Date().getFullYear()} Digispot Digital Innovation Hub. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Onedigispot Digital Innovations Hub. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href={import.meta.env.VITE_TERMS_OF_SERVICE_URL || "#"} className="hover:text-slate-600">Terms</a>
             <a href={import.meta.env.VITE_PRIVACY_POLICY_URL || "#"} className="hover:text-slate-600">Privacy</a>

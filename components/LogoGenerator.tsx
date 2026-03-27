@@ -91,7 +91,7 @@ const LogoGenerator: React.FC = () => {
                     type="text" 
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
-                    placeholder="e.g. Digispot"
+                    placeholder="e.g. Onedigispot"
                     className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-all"
                     required
                   />

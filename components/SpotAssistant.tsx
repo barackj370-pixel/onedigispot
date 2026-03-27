@@ -5,7 +5,7 @@ import { chatWithAssistant } from '../services/geminiService';
 const SpotAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([
-    {role: 'model', text: "Hi there! I'm Spot, Digispot's AI assistant. How can I help you innovate today?"}
+    {role: 'model', text: "Hi there! I'm Spot, Onedigispot's AI assistant. How can I help you innovate today?"}
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);

@@ -5,30 +5,16 @@ const projects = [
   {
     title: "Food Coop Market",
     category: "E-Commerce Platform",
-    image: "https://image.thum.io/get/width/800/crop/600/https://kplfoodcoopmarket.co.ke/",
+    image: "https://s0.wp.com/mshots/v1/https://kplfoodcoopmarket.co.ke?w=800&h=600",
     desc: "An online marketplace connecting consumers with fresh, locally sourced produce and groceries.",
     link: "https://kplfoodcoopmarket.co.ke"
   },
   {
-    title: "EcoHarvest Mobile",
-    category: "AgriTech App",
-    image: "https://picsum.photos/800/600?random=1",
-    desc: "A marketplace app for Kenyan smallholder farmers connecting them directly with bulk buyers.",
-    link: "#"
-  },
-  {
-    title: "SafariPay Enterprise",
-    category: "FinTech Platform",
-    image: "https://picsum.photos/800/600?random=2",
-    desc: "Robust B2B payment gateway integration with localized mobile money APIs.",
-    link: "#"
-  },
-  {
-    title: "Nairobi HealthConnect",
-    category: "HealthTech Solution",
-    image: "https://picsum.photos/800/600?random=3",
-    desc: "Telemedicine platform providing instant access to specialists across East Africa.",
-    link: "#"
+    title: "The Summer Pools",
+    category: "Corporate Website",
+    image: "https://s0.wp.com/mshots/v1/https://thesummerpools.com?w=800&h=600",
+    desc: "A professional web presence for a premier pool construction and maintenance company.",
+    link: "https://thesummerpools.com"
   }
 ];
 
@@ -41,7 +27,7 @@ const Portfolio: React.FC = () => {
             <h2 className="text-indigo-600 font-bold uppercase tracking-widest text-sm mb-3">Portfolio</h2>
             <h3 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">Built for Success</h3>
             <p className="text-slate-600 text-lg">
-              We've partnered with visionary organizations to deliver digital solutions that solve real-world problems in the African context.
+              We've partnered with visionary organizations to deliver digital solutions that solve real-world problems.
             </p>
           </div>
           <a href="#" className="px-8 py-3 border border-slate-300 rounded-full font-bold hover:bg-slate-900 hover:text-white transition-all">

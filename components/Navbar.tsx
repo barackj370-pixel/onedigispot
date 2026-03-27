@@ -20,12 +20,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
-              <span className="text-white font-bold text-xl">D</span>
-            </div>
-            <span className={`text-2xl font-bold tracking-tight ${scrolled || !isHome ? 'text-slate-900' : 'text-slate-900'}`}>
-              digispot<span className="text-indigo-600">.</span>
-            </span>
+            <img src="/logo.svg" alt="Onedigispot.com" className="h-12 w-auto object-contain" />
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">

@@ -3,7 +3,6 @@ import Hero from '../components/Hero';
 import Services from '../components/Services';
 import InnovationLab from '../components/InnovationLab';
 import Portfolio from '../components/Portfolio';
-import LogoGenerator from '../components/LogoGenerator';
 
 const Home: React.FC = () => {
   return (
@@ -12,7 +11,6 @@ const Home: React.FC = () => {
       <Services />
       <Portfolio />
       <InnovationLab />
-      <LogoGenerator />
       
       {/* CTA Section */}
       <section id="contact" className="py-24 bg-indigo-600 relative overflow-hidden">
@@ -22,7 +20,7 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h2 className="text-white text-4xl md:text-5xl font-extrabold mb-8">Ready to Build the Future?</h2>
           <p className="text-indigo-100 text-xl max-w-2xl mx-auto mb-12">
-            Whether you have a fully scoped project or just a seed of an idea, let's talk about how Digispot can bring it to life.
+            Whether you have a fully scoped project or just a seed of an idea, let's talk about how Onedigispot can bring it to life.
           </p>
           <div className="bg-white p-2 rounded-2xl max-w-xl mx-auto shadow-2xl flex flex-col sm:flex-row gap-2">
             <input 

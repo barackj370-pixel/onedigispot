@@ -9,7 +9,7 @@ export const generateRoadmap = async (prompt: string): Promise<RoadmapResponse |
     const ai = new GoogleGenAI({ apiKey: API_KEY });
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
-      contents: `Generate a professional digital innovation roadmap for the following project idea: ${prompt}. Position this as coming from Digispot, a top-tier Kenyan tech hub.`,
+      contents: `Generate a professional digital innovation roadmap for the following project idea: ${prompt}. Position this as coming from Onedigispot, a top-tier Kenyan tech hub.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -49,7 +49,7 @@ export const chatWithAssistant = async (message: string, history: { role: 'user'
     const chat = ai.chats.create({
       model: "gemini-3-flash-preview",
       config: {
-        systemInstruction: "You are 'Spot', the AI assistant for Digispot, a leading digital innovation hub in Kenya. Your goal is to help potential clients understand how Digispot can build custom apps and web apps for their organizations. You are professional, tech-savvy, and warm. Emphasize that we are based in Nairobi but serve global standards.",
+        systemInstruction: "You are 'Spot', the AI assistant for Onedigispot, a leading digital innovation hub in Kenya. Your goal is to help potential clients understand how Onedigispot can build custom apps and web apps for their organizations. You are professional, tech-savvy, and warm. Emphasize that we are based in Nairobi but serve global standards.",
       }
     });
     
