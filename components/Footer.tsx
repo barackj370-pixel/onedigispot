@@ -47,17 +47,9 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-slate-900 mb-6">Contact</h4>
             <ul className="space-y-4 text-slate-500">
-              <li className="flex items-start">
-                <span className="mr-3">📍</span>
-                Innovation Towers, Waiyaki Way<br />Nairobi, Kenya
-              </li>
               <li className="flex items-center">
                 <span className="mr-3">📧</span>
-                hello@digispot.co.ke
-              </li>
-              <li className="flex items-center">
-                <span className="mr-3">📞</span>
-                +254 (0) 700 000 000
+                info@onedigispot.com
               </li>
             </ul>
           </div>
