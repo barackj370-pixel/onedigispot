@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Image as ImageIcon, Share2, ArrowRight, Search, PenTool } from 'lucide-react';
+import { Image as ImageIcon, Share2, ArrowRight, Search, PenTool, Filter } from 'lucide-react';
 
 const ToolsPage: React.FC = () => {
   return (
@@ -13,7 +13,7 @@ const ToolsPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           <Link to="/tools/logo-designer" className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col h-full">
             <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <ImageIcon size={32} />
@@ -62,6 +62,19 @@ const ToolsPage: React.FC = () => {
               Generate long-form, keyword-optimized articles with proper headings, introductions, and conclusions.
             </p>
             <div className="flex items-center text-orange-600 font-bold mt-auto">
+              Open Tool <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
+            </div>
+          </Link>
+
+          <Link to="/tools/funnel-builder" className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col h-full">
+            <div className="w-16 h-16 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Filter size={32} />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">AI Funnel Builder</h2>
+            <p className="text-slate-600 mb-8 flex-grow">
+              Generate a complete, high-converting sales funnel including landing pages, email sequences, and upsell strategies.
+            </p>
+            <div className="flex items-center text-purple-600 font-bold mt-auto">
               Open Tool <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </div>
           </Link>
