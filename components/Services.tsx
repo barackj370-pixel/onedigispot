@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const services = [
@@ -60,12 +59,6 @@ const Services: React.FC = () => {
               </div>
               <h4 className="text-xl font-bold text-slate-900 mb-4">{service.title}</h4>
               <p className="text-slate-600 leading-relaxed mb-6">{service.desc}</p>
-              <a href="#contact" className="text-indigo-600 font-bold inline-flex items-center group-hover:translate-x-1 transition-transform">
-                Learn More 
-                <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
             </div>
           ))}
         </div>
