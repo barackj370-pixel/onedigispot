@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 
 async function startServer() {
   const app = express();
@@ -26,26 +26,29 @@ async function startServer() {
       // In a real app, you would save the lead to Supabase here
       // e.g., await supabase.from('leads').insert({ funnel_slug: slug, email })
 
-      // Send the first email in the sequence using SendGrid
-      const sendgridKey = process.env.SENDGRID_API_KEY;
+      // Send the first email in the sequence using Resend
+      const resendKey = process.env.RESEND_API_KEY;
       
-      if (sendgridKey && funnelData.emails && funnelData.emails.length > 0) {
-        sgMail.setApiKey(sendgridKey);
-        
+      if (resendKey && funnelData.emails && funnelData.emails.length > 0) {
+        const resend = new Resend(resendKey);
         const firstEmail = funnelData.emails[0];
         
-        const msg = {
+        const { data, error } = await resend.emails.send({
+          from: process.env.EMAIL_FROM_ADDRESS || 'info@mail.onedigispot.com', // Use a subdomain like mail.onedigispot.com to avoid MX conflicts
           to: email,
-          from: 'info@onedigispot.com', // Must be verified in SendGrid
           subject: firstEmail.subject,
           text: firstEmail.body,
           html: `<div style="font-family: sans-serif; white-space: pre-wrap;">${firstEmail.body}</div>`,
-        };
+        });
 
-        await sgMail.send(msg);
-        console.log(`Email sent to ${email} for funnel ${slug}`);
+        if (error) {
+          console.error("Resend API Error:", error);
+          throw new Error(error.message);
+        }
+
+        console.log(`Email sent to ${email} for funnel ${slug}. ID: ${data?.id}`);
       } else {
-        console.log("SendGrid API key not configured or no emails in sequence. Skipping email send.");
+        console.log("Resend API key not configured or no emails in sequence. Skipping email send.");
       }
 
       res.json({ success: true });
