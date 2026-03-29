@@ -1,10 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const projects = [
+  {
+    title: "Food Coop Market",
+    category: "E-Commerce Platform",
+    image: "https://s0.wp.com/mshots/v1/https://kplfoodcoopmarket.co.ke?w=800&h=600",
+    desc: "An online marketplace connecting consumers with fresh, locally sourced produce and groceries.",
+    link: "https://kplfoodcoopmarket.co.ke"
+  },
+  {
+    title: "The Summer Pools",
+    category: "Corporate Website",
+    image: "https://s0.wp.com/mshots/v1/https://thesummerpools.com?w=800&h=600",
+    desc: "A professional web presence for a premier pool construction and maintenance company.",
+    link: "https://thesummerpools.com"
+  }
+];
+
 const PortfolioPage: React.FC = () => {
   return (
     <div className="pt-24 pb-16 bg-slate-50 min-h-screen">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 md:p-12">
           <h1 className="text-4xl font-bold text-slate-900 mb-6 font-heading">Our Portfolio</h1>
           <div className="prose prose-lg text-slate-600 max-w-none">
@@ -17,27 +34,33 @@ const PortfolioPage: React.FC = () => {
               We've had the privilege of working with a diverse range of clients, from ambitious startups to established enterprises. Here are a few examples of how we've helped them achieve their digital goals.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 mb-8">
-              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                <h3 className="text-xl font-bold text-slate-900 mb-2">E-Commerce Platform Redesign</h3>
-                <p className="text-sm text-indigo-600 font-semibold mb-3">UI/UX Design & Web Development</p>
-                <p className="text-slate-600 text-sm">A complete overhaul of a legacy e-commerce site, resulting in a 40% increase in conversion rates and a significantly improved user experience.</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Fintech Mobile App</h3>
-                <p className="text-sm text-indigo-600 font-semibold mb-3">Custom App Development</p>
-                <p className="text-slate-600 text-sm">A secure, high-performance mobile application for a growing fintech startup, featuring real-time transactions and biometric authentication.</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Corporate Intranet Portal</h3>
-                <p className="text-sm text-indigo-600 font-semibold mb-3">Enterprise Software</p>
-                <p className="text-slate-600 text-sm">A centralized hub for a multinational corporation, streamlining internal communication and document management for over 5,000 employees.</p>
-              </div>
-              <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
-                <h3 className="text-xl font-bold text-slate-900 mb-2">AI-Powered Marketing Tool</h3>
-                <p className="text-sm text-indigo-600 font-semibold mb-3">Digital Strategy & Development</p>
-                <p className="text-slate-600 text-sm">A SaaS platform leveraging machine learning to automate marketing campaigns, reducing customer acquisition costs by 25%.</p>
-              </div>
+            <div className="grid md:grid-cols-2 gap-8 mt-8 mb-8">
+              {projects.map((project, idx) => (
+                <a 
+                  href={project.link} 
+                  target={project.link !== "#" ? "_blank" : "_self"} 
+                  rel="noreferrer" 
+                  key={idx} 
+                  className="group overflow-hidden rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all border border-slate-100 block no-underline"
+                >
+                  <div className="aspect-[4/3] overflow-hidden relative">
+                    <img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 m-0"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
+                      <span className="text-white font-bold bg-indigo-600 px-4 py-2 rounded-full text-xs">View Project</span>
+                    </div>
+                  </div>
+                  <div className="p-8">
+                    <span className="text-indigo-600 font-bold text-xs uppercase tracking-wider mb-2 block">{project.category}</span>
+                    <h4 className="text-2xl font-bold text-slate-900 mb-3 mt-0">{project.title}</h4>
+                    <p className="text-slate-500 line-clamp-2 m-0">{project.desc}</p>
+                  </div>
+                </a>
+              ))}
             </div>
 
             <h2 className="text-2xl font-bold text-slate-900 mt-10 mb-4">Our Impact</h2>
@@ -47,7 +70,7 @@ const PortfolioPage: React.FC = () => {
 
             <div className="mt-12 pt-8 border-t border-slate-100">
               <h3 className="text-xl font-bold text-slate-900 mb-4">Ready to be our next success story?</h3>
-              <Link to="/#contact" className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg">
+              <Link to="/#contact" className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg no-underline">
                 Start Your Project
               </Link>
             </div>
