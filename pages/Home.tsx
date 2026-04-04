@@ -26,6 +26,18 @@ const Home: React.FC = () => {
 
       if (error) throw error;
 
+      // Send the immediate welcome email
+      try {
+        await fetch('/api/consultations/welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+      } catch (emailError) {
+        console.error('Failed to send welcome email:', emailError);
+        // We don't throw here because the consultation was already saved successfully
+      }
+
       setStatus('success');
       setEmail('');
       
