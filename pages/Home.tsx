@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import Services from '../components/Services';
 import InnovationLab from '../components/InnovationLab';
@@ -9,6 +10,7 @@ const Home: React.FC = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleBookConsultation = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,8 +29,8 @@ const Home: React.FC = () => {
       setStatus('success');
       setEmail('');
       
-      // Reset success message after 5 seconds
-      setTimeout(() => setStatus('idle'), 5000);
+      // Redirect to the thank you page to book on Calendly
+      navigate('/thank-you');
     } catch (error: any) {
       console.error('Error booking consultation:', error);
       setStatus('error');
