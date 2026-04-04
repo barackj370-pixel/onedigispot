@@ -24,6 +24,7 @@ import PortfolioPage from './pages/PortfolioPage';
 import CareersPage from './pages/CareersPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
+import ThankYouPage from './pages/ThankYouPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="/tools" element={<ToolsPage />} />
             <Route path="/tools/logo-designer" element={<LogoDesignerPage />} />
             <Route path="/tools/social-media-ai" element={<SocialMediaAIPage />} />
