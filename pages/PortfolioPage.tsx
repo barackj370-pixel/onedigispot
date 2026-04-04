@@ -15,6 +15,13 @@ const projects = [
     image: "https://s0.wp.com/mshots/v1/https://thesummerpools.com?w=800&h=600",
     desc: "A professional web presence for a premier pool construction and maintenance company.",
     link: "https://thesummerpools.com"
+  },
+  {
+    title: "CSRG Kenya",
+    category: "Organization Website",
+    image: "https://s0.wp.com/mshots/v1/https://csrgkenya.org?w=800&h=600",
+    desc: "A digital platform for the Civil Society Reference Group in Kenya, facilitating advocacy and engagement.",
+    link: "https://csrgkenya.org"
   }
 ];
 
