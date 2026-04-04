@@ -29,7 +29,8 @@ async function startServer() {
         const resend = new Resend(resendKey);
         
         const { data, error } = await resend.emails.send({
-          from: 'Onedigispot <hello@mail.onedigispot.com>',
+          from: 'Onedigispot <enquiry@mail.onedigispot.com>',
+          reply_to: 'info@onedigispot.com',
           to: email,
           subject: "Thanks for reaching out to Onedigispot!",
           html: `
