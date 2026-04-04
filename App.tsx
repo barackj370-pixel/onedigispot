@@ -7,12 +7,21 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import ToolsPage from './pages/ToolsPage';
+
+// Tool Apps
 import LogoDesignerPage from './pages/LogoDesignerPage';
 import SocialMediaAIPage from './pages/SocialMediaAIPage';
 import KeywordGeneratorPage from './pages/KeywordGeneratorPage';
 import ContentGeneratorPage from './pages/ContentGeneratorPage';
 import FunnelBuilderPage from './pages/FunnelBuilderPage';
 import PublishedFunnel from './pages/PublishedFunnel';
+
+// Tool Landing Pages
+import LogoMakerLanding from './pages/landing/LogoMakerLanding';
+import KeywordGeneratorLanding from './pages/landing/KeywordGeneratorLanding';
+import ContentWriterLanding from './pages/landing/ContentWriterLanding';
+import SocialMediaAILanding from './pages/landing/SocialMediaAILanding';
+import FunnelBuilderLanding from './pages/landing/FunnelBuilderLanding';
 
 // New Pages
 import CustomAppDevPage from './pages/CustomAppDevPage';
@@ -38,11 +47,21 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
             <Route path="/tools" element={<ToolsPage />} />
-            <Route path="/tools/logo-designer" element={<LogoDesignerPage />} />
-            <Route path="/tools/social-media-ai" element={<SocialMediaAIPage />} />
-            <Route path="/tools/keyword-generator" element={<KeywordGeneratorPage />} />
-            <Route path="/tools/content-generator" element={<ContentGeneratorPage />} />
-            <Route path="/tools/funnel-builder" element={<FunnelBuilderPage />} />
+            
+            {/* SEO Landing Pages */}
+            <Route path="/free-ai-logo-maker" element={<LogoMakerLanding />} />
+            <Route path="/free-seo-keyword-generator" element={<KeywordGeneratorLanding />} />
+            <Route path="/free-ai-content-writer" element={<ContentWriterLanding />} />
+            <Route path="/social-media-ai-manager" element={<SocialMediaAILanding />} />
+            <Route path="/ai-sales-funnel-builder" element={<FunnelBuilderLanding />} />
+
+            {/* Actual Tool Apps */}
+            <Route path="/app/logo-maker" element={<LogoDesignerPage />} />
+            <Route path="/app/social-media-ai" element={<SocialMediaAIPage />} />
+            <Route path="/app/keyword-generator" element={<KeywordGeneratorPage />} />
+            <Route path="/app/content-writer" element={<ContentGeneratorPage />} />
+            <Route path="/app/funnel-builder" element={<FunnelBuilderPage />} />
+            
             <Route path="/f/:slug" element={<PublishedFunnel />} />
             
             {/* Services Routes */}
