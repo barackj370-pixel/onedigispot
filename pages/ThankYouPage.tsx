@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { InlineWidget } from 'react-calendly';
 
 const ThankYouPage: React.FC = () => {
   return (
@@ -15,11 +14,14 @@ const ThankYouPage: React.FC = () => {
         </p>
         
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 h-[700px]">
-          {/* Replace this URL with your actual Calendly link */}
-          <InlineWidget 
-            url="https://calendly.com/onedigispot" 
-            styles={{ height: '100%', width: '100%' }} 
-          />
+          {/* Using a standard iframe to ensure perfect compatibility across all deployment platforms */}
+          <iframe 
+            src="https://calendly.com/onedigispot" 
+            width="100%" 
+            height="100%" 
+            frameBorder="0"
+            title="Calendly Scheduling"
+          ></iframe>
         </div>
 
         <div className="mt-12">
