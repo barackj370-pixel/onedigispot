@@ -14,6 +14,52 @@ async function startServer() {
     res.json({ status: "ok" });
   });
 
+  // Welcome Email Endpoint
+  app.post("/api/consultations/welcome", async (req, res) => {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ error: "Missing email" });
+    }
+
+    try {
+      const resendKey = process.env.RESEND_API_KEY;
+      
+      if (resendKey) {
+        const resend = new Resend(resendKey);
+        
+        const { data, error } = await resend.emails.send({
+          from: 'Onedigispot <hello@mail.onedigispot.com>',
+          to: email,
+          subject: "Thanks for reaching out to Onedigispot!",
+          html: `
+            <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
+              <p>Hi there,</p>
+              <p>Thanks for requesting a consultation with Onedigispot! We're excited to learn more about your project.</p>
+              <p>If you haven't already, please pick a time that works for you on our calendar so we can chat:</p>
+              <p><a href="https://calendly.com/onedigispot" style="display: inline-block; padding: 10px 20px; background-color: #4f46e5; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">Book your consultation</a></p>
+              <p>Best,<br>The Onedigispot Team</p>
+            </div>
+          `,
+        });
+
+        if (error) {
+          console.error("Resend API Error:", error);
+          throw new Error(error.message);
+        }
+
+        console.log(`Welcome email sent to ${email}. ID: ${data?.id}`);
+      } else {
+        console.log("Resend API key not configured. Skipping welcome email.");
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error sending welcome email:", error);
+      res.status(500).json({ error: "Failed to send welcome email" });
+    }
+  });
+
   // Funnel Opt-in Endpoint
   app.post("/api/funnels/optin", async (req, res) => {
     const { email, slug, funnelData } = req.body;
