@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="techGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" /> <!-- Indigo 600 -->
+      <stop offset="100%" stop-color="#0ea5e9" /> <!-- Sky 500 -->
+    </linearGradient>
+    <linearGradient id="techGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" /> <!-- Violet 500 -->
+      <stop offset="100%" stop-color="#3b82f6" /> <!-- Blue 500 -->
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <g transform="translate(15, 15)">
+    <!-- Innovation Spark (AI / Tech symbol) -->
+    <path d="M35 0 C35 19.3 19.3 35 0 35 C19.3 35 35 50.7 35 70 C35 50.7 50.7 35 70 35 C50.7 35 35 19.3 35 0 Z" fill="url(#techGrad1)" />
+    
+    <!-- The Digital Spot (Core) -->
+    <circle cx="35" cy="35" r="14" fill="#ffffff" filter="url(#glow)" opacity="0.9"/>
+    <circle cx="35" cy="35" r="8" fill="url(#techGrad2)" />
+    
+    <!-- Orbiting Data Nodes (Network/Connectivity) -->
+    <circle cx="62" cy="8" r="6" fill="#0ea5e9" />
+    <path d="M45 25 L62 8" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    
+    <circle cx="8" cy="62" r="5" fill="#8b5cf6" />
+    <path d="M25 45 L8 62" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    
+    <circle cx="65" cy="55" r="4" fill="#4f46e5" />
+  </g>
+
+  <!-- Typography -->
+  <text x="100" y="62" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#0f172a" letter-spacing="-1.5">
+    One<tspan fill="#4f46e5">digi</tspan>spot<tspan fill="#64748b" font-weight="600" font-size="34" letter-spacing="-0.5">.com</tspan>
+  </text>
+</svg>
