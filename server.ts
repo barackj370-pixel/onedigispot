@@ -2,6 +2,9 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import { Resend } from 'resend';
+import multer from 'multer';
+
+const upload = multer();
 
 async function startServer() {
   const app = express();
@@ -151,13 +154,154 @@ async function startServer() {
               window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS', platform: '${platform}' }, '*');
               window.close();
             } else {
-              window.location.href = '/tools/social-media-ai';
+              window.location.href = '/social-media-ai-manager';
             }
           </script>
           <p>Authentication successful for ${platform}. This window should close automatically.</p>
         </body>
       </html>
     `);
+  });
+
+  // --- REAL TIKTOK INTEGRATION ---
+
+  app.get("/api/auth/tiktok/url", (req, res) => {
+    const clientKey = process.env.TIKTOK_CLIENT_KEY;
+    // We dynamically generate the redirect URI based on where the app is currently running
+    const redirectUri = encodeURIComponent(`https://${req.get('host')}/api/auth/tiktok/callback`);
+    
+    if (!clientKey) {
+      return res.status(400).json({ error: "TikTok Client Key is missing in environment variables." });
+    }
+
+    // CSRF token to prevent attacks
+    const csrfState = Math.random().toString(36).substring(7);
+    
+    const url = `https://www.tiktok.com/v2/auth/authorize?client_key=${clientKey}&response_type=code&scope=user.info.basic,video.publish&redirect_uri=${redirectUri}&state=${csrfState}`;
+    res.json({ url });
+  });
+
+  app.get("/api/auth/tiktok/callback", async (req, res) => {
+    const { code, state, error } = req.query;
+    const clientKey = process.env.TIKTOK_CLIENT_KEY;
+    const clientSecret = process.env.TIKTOK_CLIENT_SECRET;
+    const redirectUri = `https://${req.get('host')}/api/auth/tiktok/callback`;
+
+    if (error) {
+       return res.send(`<h2>Auth Error from TikTok: ${error}</h2>`);
+    }
+
+    try {
+      // Exchange code for Access Token
+      const tokenRes = await fetch("https://open.tiktokapis.com/v2/oauth/token/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          client_key: clientKey || "",
+          client_secret: clientSecret || "",
+          code: code as string,
+          grant_type: "authorization_code",
+          redirect_uri: redirectUri
+        })
+      });
+
+      const data = await tokenRes.json();
+      
+      if (data.error) {
+        return res.send(`<p>Failed to exchange token: ${JSON.stringify(data)}</p>`);
+      }
+
+      const accessToken = data.access_token;
+      
+      // Send token back to the frontend window
+      res.send(`
+        <html>
+          <body>
+            <script>
+              if (window.opener) {
+                // Pass the real token to the frontend (in production, save to DB instead!)
+                window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS', platform: 'TikTok', token: '${accessToken}' }, '*');
+                window.close();
+              } else {
+                window.location.href = '/social-media-ai-manager';
+              }
+            </script>
+            <p>TikTok Authentication successful! This window should close automatically.</p>
+          </body>
+        </html>
+      `);
+    } catch (err: any) {
+      res.send(`<p>Server error during TikTok Auth: ${err.message}</p>`);
+    }
+  });
+
+  app.post("/api/social/tiktok/post", upload.single('video'), async (req, res) => {
+    const { token, text } = req.body;
+    const videoBuffer = req.file?.buffer;
+    
+    if (!token || !videoBuffer) {
+      return res.status(400).json({ error: "Missing token or video file" });
+    }
+
+    const size = videoBuffer.length;
+
+    try {
+      // 1. Initialize the Direct Post with TikTok
+      const initRes = await fetch("https://open.tiktokapis.com/v2/post/publish/video/init/", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify({
+          post_info: {
+             title: text || "Posted via AI Manager",
+             privacy_level: "PUBLIC",
+             disable_duet: false,
+             disable_comment: false,
+             disable_stitch: false
+          },
+          source_info: {
+             source: "FILE_UPLOAD",
+             video_size: size,
+             chunk_size: size,
+             total_chunk_count: 1
+          }
+        })
+      });
+
+      const initData = await initRes.json();
+
+      if (initData.error && initData.error.code !== 'ok') {
+         return res.status(400).json({ error: "Failed to init upload with TikTok", details: initData });
+      }
+
+      const uploadUrl = initData.data?.upload_url;
+
+      if (!uploadUrl) {
+         return res.status(400).json({ error: "TikTok didn't return an upload URL", details: initData });
+      }
+
+      // 2. HTTP PUT the video bytes directly to TikTok's provided server URL
+      const putRes = await fetch(uploadUrl, {
+         method: "PUT",
+         headers: {
+            "Content-Range": `bytes 0-${size - 1}/${size}`,
+            "Content-Length": size.toString(),
+            "Content-Type": "video/mp4"
+         },
+         body: videoBuffer
+      });
+
+      if (!putRes.ok) {
+         throw new Error("Failed to upload binary file to TikTok.");
+      }
+
+      res.json({ success: true, message: "Video successfully submitted to TikTok processing queue!" });
+    } catch (err: any) {
+      console.error("TikTok Posting Error:", err);
+      res.status(500).json({ error: err.message || "Unknown error occurred" });
+    }
   });
 
   // Vite middleware for development
