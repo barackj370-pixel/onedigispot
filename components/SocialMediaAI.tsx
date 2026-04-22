@@ -41,8 +41,9 @@ const SocialMediaAI: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   
   // New state for social platforms
-  const [platforms, setPlatforms] = useState<string[]>(['LinkedIn', 'Twitter']);
+  const [platforms, setPlatforms] = useState<string[]>(['TikTok']);
   const [connectedPlatforms, setConnectedPlatforms] = useState<string[]>([]);
+  const [platformTokens, setPlatformTokens] = useState<Record<string, string>>({});
 
   // Listen for OAuth success messages
   useEffect(() => {
@@ -57,6 +58,9 @@ const SocialMediaAI: React.FC = () => {
         setConnectedPlatforms(prev => 
           prev.includes(platform) ? prev : [...prev, platform]
         );
+        if (event.data.token) {
+          setPlatformTokens(prev => ({ ...prev, [platform]: event.data.token }));
+        }
       }
     };
     window.addEventListener('message', handleMessage);
@@ -66,11 +70,14 @@ const SocialMediaAI: React.FC = () => {
   const handleConnect = async (platform: string) => {
     try {
       // 1. Fetch the OAuth URL from your server
-      const response = await fetch(`/api/auth/url?platform=${platform}`);
-      if (!response.ok) {
-        throw new Error('Failed to get auth URL');
+      const endpoint = platform === 'TikTok' ? '/api/auth/tiktok/url' : `/api/auth/url?platform=${platform}`;
+      const response = await fetch(endpoint);
+      
+      const { url, error } = await response.json();
+      
+      if (error) {
+        throw new Error(error);
       }
-      const { url } = await response.json();
 
       // 2. Open the OAuth PROVIDER's URL directly in popup
       const authWindow = window.open(
@@ -82,9 +89,9 @@ const SocialMediaAI: React.FC = () => {
       if (!authWindow) {
         alert('Please allow popups for this site to connect your account.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('OAuth error:', error);
-      setError(`Failed to connect to ${platform}.`);
+      setError(`Failed to connect to ${platform}: ${error.message}`);
     }
   };
 
@@ -232,13 +239,54 @@ const SocialMediaAI: React.FC = () => {
       return;
     }
 
-    // Simulate posting process
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+
     setPosts(prev => prev.map(p => p.id === id ? { ...p, status: 'posting' } : p));
-    
-    // Mock API delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setPosts(prev => prev.map(p => p.id === id ? { ...p, status: 'posted' } : p));
+    setError(null);
+
+    try {
+      // If sharing to TikTok, make the real API call
+      if (platforms.includes('TikTok') && post.type === 'video') {
+         const token = platformTokens['TikTok'];
+         if (!token) {
+           throw new Error("You must connect your TikTok account above before posting.");
+         }
+         if (!post.videoUrl) {
+           throw new Error("No video file generated yet.");
+         }
+
+         // Fetch the video blob stored inside the object URL
+         const videoRes = await fetch(post.videoUrl);
+         if (!videoRes.ok) throw new Error("Could not retrieve video file");
+         const videoBlob = await videoRes.blob();
+
+         const formData = new FormData();
+         formData.append('video', videoBlob, 'generate_video.mp4');
+         formData.append('token', token);
+         formData.append('text', post.description || post.content);
+
+         const uploadResponse = await fetch('/api/social/tiktok/post', {
+           method: 'POST',
+           body: formData
+         });
+
+         const uploadResult = await uploadResponse.json();
+         if (!uploadResponse.ok) {
+           throw new Error(uploadResult.error || "Failed to post to TikTok");
+         }
+         console.log("TikTok Upload Success:", uploadResult);
+      } else {
+         // Simulate posting for other platforms
+         await new Promise(resolve => setTimeout(resolve, 1500));
+      }
+
+      setPosts(prev => prev.map(p => p.id === id ? { ...p, status: 'posted' } : p));
+    } catch (err: any) {
+      setError(err.message);
+      // Revert status on failure
+      setPosts(prev => prev.map(p => p.id === id ? { ...p, status: 'draft' } : p));
+    }
   };
 
   const scheduleAll = () => {
@@ -334,7 +382,7 @@ const SocialMediaAI: React.FC = () => {
                   </div>
                   
                   <div className="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded-xl text-xs leading-relaxed">
-                    <strong>How Auto-Posting Works:</strong> This interface is currently a <em>UI prototype</em>. To actually auto-post to these platforms, we would need to implement <strong>OAuth Authentication</strong> (where you log into each platform to grant this app permission) and a backend server to execute the API calls. Clicking "Share" or "Schedule" currently simulates this process.
+                    <strong>How Auto-Posting Works:</strong> We have successfully integrated TikTok's real API! By clicking "Connect" on TikTok, you will be taken to real TikTok OAuth to connect an account. Creating and "Sharing" a simulated video to TikTok will now send actual video bytes straight to the TikTok processing queue. <em>Other platforms are currently in prototype display mode and will be implemented soon.</em>
                   </div>
                 </div>
 
