@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 
 const services = [
   {
@@ -41,10 +41,24 @@ const services = [
 ];
 
 const Services: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    // Approximating the width of an item including its margins
+    const itemWidth = scrollRef.current.clientWidth * 0.85; 
+    const newIndex = Math.round(scrollLeft / itemWidth);
+    if (newIndex !== activeIndex && newIndex >= 0 && newIndex < services.length) {
+      setActiveIndex(newIndex);
+    }
+  };
+
   return (
     <section id="services" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 md:mb-16 px-4">
+        <div className="text-center mb-6 md:mb-16 px-4">
           <h2 className="text-indigo-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-3">Our Expertise</h2>
           <h3 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6">Global Solutions, African Innovation</h3>
           <p className="text-slate-600 text-base md:text-lg max-w-3xl mx-auto">
@@ -52,7 +66,17 @@ const Services: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex overflow-x-auto pb-8 pt-4 -mx-4 px-4 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:p-0 md:mx-0 no-scrollbar">
+        <div className="md:hidden flex justify-center items-center mb-6">
+          <span className="bg-slate-100 text-slate-500 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+            {activeIndex + 1} of {services.length}
+          </span>
+        </div>
+
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex overflow-x-auto pb-8 pt-4 -mx-4 px-4 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:p-0 md:mx-0 no-scrollbar"
+        >
           {services.map((service, idx) => (
             <div key={idx} className="w-[85vw] shrink-0 snap-center mr-4 md:mr-0 md:w-auto md:shrink group p-6 md:p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
               <div className={`w-12 h-12 md:w-14 md:h-14 ${service.color} rounded-xl flex items-center justify-center text-2xl md:text-3xl mb-6 shadow-sm`}>
