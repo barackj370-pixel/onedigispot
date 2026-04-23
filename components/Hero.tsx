@@ -44,7 +44,7 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <section className="relative w-full h-[100svh] min-h-[600px] md:max-h-[800px] pt-[80px] overflow-hidden flex items-center bg-slate-50">
+    <section className="relative w-full min-h-[100svh] lg:h-[100svh] pt-[120px] md:pt-[100px] pb-20 md:pb-0 overflow-hidden flex items-center bg-slate-50">
       {/* Dynamic Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <AnimatePresence mode="popLayout">
