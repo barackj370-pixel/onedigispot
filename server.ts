@@ -304,6 +304,13 @@ async function startServer() {
     }
   });
 
+  // TikTok Webhook Endpoint
+  app.post("/api/webhooks/tiktok", (req, res) => {
+    // TikTok sends event notifications here
+    console.log("TikTok Webhook Received:", req.body);
+    res.status(200).send("ok");
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
