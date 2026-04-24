@@ -5,7 +5,7 @@ import { chatWithAssistant } from '../services/geminiService';
 const SpotAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([
-    {role: 'model', text: "Hi there! I'm Spot, Onedigispot's AI assistant. How can I help you innovate today?"}
+    {role: 'model', text: "Hi there! I'm Luna, Onedigispot's AI assistant. How can I help you innovate today?"}
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ const SpotAssistant: React.FC = () => {
                 🤖
               </div>
               <div>
-                <h4 className="font-bold text-sm">Spot Assistant</h4>
+                <h4 className="font-bold text-sm">Luna</h4>
                 <div className="flex items-center space-x-1">
                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
                    <span className="text-[10px] text-indigo-100 uppercase font-bold">Online</span>
@@ -83,7 +83,7 @@ const SpotAssistant: React.FC = () => {
               <input 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask Spot anything..."
+                placeholder="Ask Luna anything..."
                 className="flex-1 bg-slate-100 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
               />
               <button 
