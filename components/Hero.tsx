@@ -19,32 +19,41 @@ const slides = [
   },
   {
     id: 'ai-tools',
-    badge: 'Free AI Portal',
+    badge: 'Free AI Marketing Tools',
     title: 'Next-Gen Marketing Engine',
     description: 'Supercharge your growth with our suite of intelligent, automated AI marketing tools. Available for free.',
     accent: 'from-pink-500 to-rose-400',
     bgOrb: 'bg-pink-600/20',
     items: [
-      { title: 'Logo Generator', icon: <PenTool className="w-6 h-6" />, delay: 0.1 },
-      { title: 'Social Media AI', icon: <Share2 className="w-6 h-6" />, delay: 0.2 },
-      { title: 'SEO Keywords', icon: <Search className="w-6 h-6" />, delay: 0.3 },
-      { title: 'Funnel Builder', icon: <Filter className="w-6 h-6" />, delay: 0.4 }
+      { title: 'Logo Generator', icon: <PenTool className="w-5 h-5 md:w-6 md:h-6" />, delay: 0.1 },
+      { title: 'Social Media AI', icon: <Share2 className="w-5 h-5 md:w-6 md:h-6" />, delay: 0.2 },
+      { title: 'SEO Keywords', icon: <Search className="w-5 h-5 md:w-6 md:h-6" />, delay: 0.3 },
+      { title: 'Funnel Builder', icon: <Filter className="w-5 h-5 md:w-6 md:h-6" />, delay: 0.4 }
     ]
   }
 ];
 
 const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
+    if (isPaused) return;
+
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 7000);
+    }, 12000); // Increased from 7000ms to 12000ms
     return () => clearInterval(timer);
-  }, []);
+  }, [isPaused]);
 
   return (
-    <section className="relative w-full min-h-[100svh] lg:h-[100svh] pt-[120px] md:pt-[100px] pb-20 md:pb-0 overflow-hidden flex items-center bg-slate-50">
+    <section 
+      className="relative w-full min-h-[100svh] lg:h-[100svh] pt-[120px] md:pt-[100px] pb-20 md:pb-0 overflow-hidden flex items-center bg-slate-50"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+    >
       {/* Dynamic Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <AnimatePresence mode="popLayout">
@@ -124,12 +133,12 @@ const Hero: React.FC = () => {
                       animate={{ opacity: 1, scale: 1, y: idx % 2 === 1 ? 24 : -24 }}
                       exit={{ opacity: 0, scale: 0.8, y: -30 }}
                       transition={{ delay: item.delay, duration: 0.6, type: "spring", stiffness: 100 }}
-                      className="bg-white/80 backdrop-blur-xl border border-white/60 p-6 rounded-3xl shadow-xl flex flex-col items-center justify-center text-center hover:bg-white transition-colors group"
+                      className="bg-white/80 backdrop-blur-xl border border-white/60 p-4 sm:p-5 md:p-6 rounded-2xl md:rounded-3xl shadow-xl flex flex-col items-center justify-center text-center hover:bg-white transition-colors group"
                     >
-                      <div className={`p-4 rounded-2xl bg-gradient-to-br ${slides[currentSlide].accent} text-white mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <div className={`p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br ${slides[currentSlide].accent} text-white mb-2 md:mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                         {item.icon}
                       </div>
-                      <h3 className="font-bold text-slate-900 text-lg">{item.title}</h3>
+                      <h3 className="font-bold text-slate-900 text-xs sm:text-sm md:text-lg">{item.title}</h3>
                     </motion.div>
                   ))}
                 </div>
@@ -140,12 +149,12 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Custom Navigation Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3 z-20">
+        <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex space-x-4 z-20 bg-slate-900/5 backdrop-blur-sm px-4 py-2 rounded-full">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`h-2 rounded-full transition-all duration-500 ${
+              className={`h-3 rounded-full transition-all duration-500 hover:scale-110 ${
                 currentSlide === index ? 'w-12 bg-indigo-600' : 'w-4 bg-slate-300 hover:bg-slate-400'
               }`}
               aria-label={`Go to slide ${index + 1}`}
