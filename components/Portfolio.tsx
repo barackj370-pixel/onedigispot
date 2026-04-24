@@ -44,7 +44,7 @@ const Portfolio: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-16 gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-indigo-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-3">Portfolio</h2>
+            <h2 className="text-indigo-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-3">Portfolio • 3 Latest Projects</h2>
             <h3 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4 md:mb-6">Built for Success</h3>
             <p className="text-slate-600 text-base md:text-lg">
               We've partnered with visionary organizations to deliver digital solutions that solve real-world problems.
