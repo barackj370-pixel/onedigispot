@@ -39,7 +39,7 @@ const SiteNav: React.FC = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
               </span>
-              Free AI Tools
+              Free AI Marketing Tools
             </Link>
             <a href={isHome ? "#contact" : "/#contact"} className="bg-indigo-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg">
               Contact Us
@@ -73,7 +73,7 @@ const SiteNav: React.FC = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
               </span>
-              Free AI Tools
+              Free AI Marketing Tools
             </Link>
             <a onClick={() => setMobileMenuOpen(false)} href={isHome ? "#contact" : "/#contact"} className="bg-indigo-600 text-center text-white px-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-md mt-4 block">
               Contact Us
