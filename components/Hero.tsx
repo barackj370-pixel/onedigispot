@@ -42,7 +42,7 @@ const Hero: React.FC = () => {
 
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 12000); // Increased from 7000ms to 12000ms
+    }, 10000); // Decreased to 10000ms
     return () => clearInterval(timer);
   }, [isPaused]);
 
