@@ -3,6 +3,7 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { Resend } from 'resend';
 import multer from 'multer';
+import { createClient } from '@supabase/supabase-js';
 
 const upload = multer();
 
@@ -11,6 +12,11 @@ async function startServer() {
   const PORT = 3000;
 
   app.use(express.json());
+
+  // Initialize Supabase for backend use (ensure you have these set in Render)
+  const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'placeholder';
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   // API routes FIRST
   app.get("/api/health", (req, res) => {
@@ -32,7 +38,7 @@ async function startServer() {
         const resend = new Resend(resendKey);
         
         const { data, error } = await resend.emails.send({
-          from: 'Onedigispot <enquiry@mail.onedigispot.com>',
+          from: process.env.EMAIL_FROM_ADDRESS || 'info@mail.onedigispot.com',
           reply_to: 'info@onedigispot.com',
           to: email,
           subject: "Thanks for reaching out to Onedigispot!",
@@ -73,8 +79,20 @@ async function startServer() {
     }
 
     try {
-      // In a real app, you would save the lead to Supabase here
-      // e.g., await supabase.from('leads').insert({ funnel_slug: slug, email })
+      // Save the lead to Supabase
+      if (supabaseUrl !== 'https://placeholder.supabase.co' && supabaseKey !== 'placeholder') {
+        const { error: dbError } = await supabase.from('leads').insert({ 
+          funnel_slug: slug, 
+          email: email,
+          created_at: new Date().toISOString()
+        });
+        
+        if (dbError) {
+          console.error("Supabase Error saving lead:", dbError);
+        } else {
+          console.log(`Lead saved to Supabase: ${email} for funnel ${slug}`);
+        }
+      }
 
       // Send the first email in the sequence using Resend
       const resendKey = process.env.RESEND_API_KEY;
