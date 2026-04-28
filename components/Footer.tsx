@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -40,7 +39,7 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-slate-900 mb-6">Company</h4>
             <ul className="space-y-4 text-slate-500">
-              <li><Link to="/company/about-us" className="hover:text-indigo-600 transition-colors">About Onedigispot</Link></li>
+              <li><Link to="/company/about-us" className="hover:text-indigo-600 transition-colors">About Us</Link></li>
               <li><Link to="/company/portfolio" className="hover:text-indigo-600 transition-colors">Portfolio</Link></li>
               <li><Link to="/company/careers" className="hover:text-indigo-600 transition-colors">Careers</Link></li>
               <li><Link to="/company/privacy-policy" className="hover:text-indigo-600 transition-colors">Privacy Policy</Link></li>
@@ -69,7 +68,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="pt-10 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-slate-400 text-sm">
-          <p>© {new Date().getFullYear()} Onedigispot Digital Innovations Hub. All rights reserved.</p>
+          <p>© 2026 onedigispot.com. Digital Innovations Hub. All Rights Reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/company/terms-of-service" className="hover:text-slate-600">Terms</Link>
             <Link to="/company/privacy-policy" className="hover:text-slate-600">Privacy</Link>
