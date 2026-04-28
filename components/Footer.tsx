@@ -27,10 +27,13 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="font-bold text-slate-900 mb-6">Services</h4>
             <ul className="space-y-4 text-slate-500">
-              <li><Link to="/services/custom-app-development" className="hover:text-indigo-600 transition-colors">Custom App Dev</Link></li>
-              <li><Link to="/services/web-development" className="hover:text-indigo-600 transition-colors">Web Development</Link></li>
-              <li><Link to="/services/digital-strategy" className="hover:text-indigo-600 transition-colors">Digital Strategy</Link></li>
-              <li><Link to="/services/ui-ux-design" className="hover:text-indigo-600 transition-colors">UI/UX Design</Link></li>
+              <li><Link to="/services/custom-app-development" className="hover:text-indigo-600 transition-colors">Custom App Development</Link></li>
+              <li><Link to="/services/web-development" className="hover:text-indigo-600 transition-colors">Enterprise Web Platforms</Link></li>
+              <li><Link to="/services/seo" className="hover:text-indigo-600 transition-colors">Search Engine Optimization</Link></li>
+              <li><Link to="/services/email-marketing" className="hover:text-indigo-600 transition-colors">Email Marketing</Link></li>
+              <li><Link to="/services/sales-funnel" className="hover:text-indigo-600 transition-colors">Sales Funnel Design</Link></li>
+              <li><Link to="/services/ai-integration" className="hover:text-indigo-600 transition-colors">AI Integration</Link></li>
+              <li><Link to="/services/database-design" className="hover:text-indigo-600 transition-colors">Database Design & Integration</Link></li>
             </ul>
           </div>
           
