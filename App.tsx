@@ -28,6 +28,11 @@ import CustomAppDevPage from './pages/CustomAppDevPage';
 import WebDevelopmentPage from './pages/WebDevelopmentPage';
 import DigitalStrategyPage from './pages/DigitalStrategyPage';
 import UIUXDesignPage from './pages/UIUXDesignPage';
+import SEOPage from './pages/SEOPage';
+import EmailMarketingPage from './pages/EmailMarketingPage';
+import SalesFunnelPage from './pages/SalesFunnelPage';
+import AIIntegrationPage from './pages/AIIntegrationPage';
+import DatabaseDesignPage from './pages/DatabaseDesignPage';
 import AboutUsPage from './pages/AboutUsPage';
 import PortfolioPage from './pages/PortfolioPage';
 import CareersPage from './pages/CareersPage';
@@ -69,6 +74,11 @@ function App() {
             <Route path="/services/web-development" element={<WebDevelopmentPage />} />
             <Route path="/services/digital-strategy" element={<DigitalStrategyPage />} />
             <Route path="/services/ui-ux-design" element={<UIUXDesignPage />} />
+            <Route path="/services/seo" element={<SEOPage />} />
+            <Route path="/services/email-marketing" element={<EmailMarketingPage />} />
+            <Route path="/services/sales-funnel" element={<SalesFunnelPage />} />
+            <Route path="/services/ai-integration" element={<AIIntegrationPage />} />
+            <Route path="/services/database-design" element={<DatabaseDesignPage />} />
 
             {/* Company Routes */}
             <Route path="/company/about-us" element={<AboutUsPage />} />
