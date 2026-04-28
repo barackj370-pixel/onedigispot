@@ -65,7 +65,7 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h2 className="text-white text-3xl md:text-5xl font-extrabold mb-6 md:mb-8">Ready to Build the Future?</h2>
           <p className="text-indigo-100 text-lg md:text-xl max-w-2xl mx-auto mb-10 md:mb-12">
-            Whether you have a fully scoped project or just a seed of an idea, let's talk about how Onedigispot can bring it to life.
+            Whether you have a fully scoped project or just a seed of an idea, let's talk about how we can bring it to life.
           </p>
           <form onSubmit={handleBookConsultation} className="bg-white p-2 rounded-2xl max-w-xl mx-auto shadow-2xl flex flex-col sm:flex-row gap-2">
             <input 
