@@ -344,6 +344,18 @@ async function startServer() {
     });
   }
 
+  // Keep-alive mechanism to prevent Render sleep (Option 1)
+  // This will ping the server every 10 minutes.
+  setInterval(() => {
+    const url = process.env.RENDER_EXTERNAL_URL 
+      ? `${process.env.RENDER_EXTERNAL_URL}/api/health` 
+      : `http://localhost:${PORT}/api/health`;
+      
+    fetch(url)
+      .then(() => console.log(`[Keep-Alive] Pinged ${url} successfully`))
+      .catch((err) => console.error(`[Keep-Alive] Failed to ping ${url}:`, err.message));
+  }, 10 * 60 * 1000);
+
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
