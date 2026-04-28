@@ -53,6 +53,14 @@ const Footer: React.FC = () => {
                 <span className="mr-3">📧</span>
                 info@onedigispot.com
               </li>
+              <li className="flex items-center">
+                <span className="mr-3">📞</span>
+                +254 725 717170
+              </li>
+              <li className="flex items-center">
+                <span className="mr-3">📞</span>
+                +254 733 717170
+              </li>
             </ul>
           </div>
         </div>
