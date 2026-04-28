@@ -1,48 +1,56 @@
 
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 const services = [
   {
     title: "Custom App Development",
     desc: "Scalable iOS and Android applications built with React Native and Flutter for high-performance mobile experiences.",
     icon: "📱",
-    color: "bg-blue-50"
+    color: "bg-blue-50",
+    href: "/services/custom-app-development"
   },
   {
     title: "Enterprise Web Platforms",
     desc: "Robust, secure, and modern web applications using React, Node.js, and cloud-native architectures.",
     icon: "💻",
-    color: "bg-indigo-50"
+    color: "bg-indigo-50",
+    href: "/services/web-development"
   },
   {
     title: "Search Engine Optimization",
     desc: "Data-driven SEO strategies to boost your global search rankings and drive organic traffic to your business.",
     icon: "🔍",
-    color: "bg-purple-50"
+    color: "bg-purple-50",
+    href: "/services/seo"
   },
   {
     title: "Email Marketing",
     desc: "Automated, high-conversion email campaigns that nurture leads and build lasting customer relationships.",
     icon: "📧",
-    color: "bg-orange-50"
+    color: "bg-orange-50",
+    href: "/services/email-marketing"
   },
   {
     title: "Sales Funnel Design",
     desc: "Strategic sales funnels engineered to convert visitors into loyal customers through optimized user journeys.",
     icon: "🎯",
-    color: "bg-cyan-50"
+    color: "bg-cyan-50",
+    href: "/services/sales-funnel"
   },
   {
     title: "AI Integration",
     desc: "Leveraging cutting-edge Large Language Models and computer vision to automate organizational intelligence.",
     icon: "🤖",
-    color: "bg-emerald-50"
+    color: "bg-emerald-50",
+    href: "/services/ai-integration"
   },
   {
     title: "Database Design & Integration",
     desc: "Designing and integrating robust, scalable, and secure databases tailored for your enterprise needs.",
     icon: "🗄️",
-    color: "bg-teal-50"
+    color: "bg-teal-50",
+    href: "/services/database-design"
   }
 ];
 
@@ -84,13 +92,19 @@ const Services: React.FC = () => {
           className="flex overflow-x-auto pb-8 pt-4 -mx-4 px-4 snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:overflow-visible md:p-0 md:mx-0 no-scrollbar"
         >
           {services.map((service, idx) => (
-            <div key={idx} className="w-[85vw] shrink-0 snap-center mr-4 md:mr-0 md:w-auto md:shrink group p-6 md:p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <Link to={service.href} key={idx} className="block w-[85vw] shrink-0 snap-center mr-4 md:mr-0 md:w-auto md:shrink group p-6 md:p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
               <div className={`w-12 h-12 md:w-14 md:h-14 ${service.color} rounded-xl flex items-center justify-center text-2xl md:text-3xl mb-6 shadow-sm`}>
                 {service.icon}
               </div>
-              <h4 className="text-lg md:text-xl font-bold text-slate-900 mb-3 md:mb-4">{service.title}</h4>
+              <h4 className="text-lg md:text-xl font-bold text-slate-900 mb-3 md:mb-4 group-hover:text-indigo-600 transition-colors">{service.title}</h4>
               <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-4 md:mb-6">{service.desc}</p>
-            </div>
+              <span className="text-indigo-600 font-medium flex items-center text-sm md:text-base opacity-0 group-hover:opacity-100 transition-opacity">
+                Learn more
+                <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
           ))}
         </div>
       </div>
