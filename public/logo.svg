@@ -33,7 +33,10 @@
   </g>
 
   <!-- Typography -->
-  <text x="100" y="62" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" fill="#0f172a" letter-spacing="-1.5">
-    One<tspan fill="#4f46e5">digi</tspan>spot<tspan fill="#64748b" font-weight="600" font-size="34" letter-spacing="-0.5">.com</tspan>
+  <text x="100" y="56" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" letter-spacing="-1.5">
+    <tspan fill="#0f172a">One</tspan><tspan fill="url(#techGrad1)">digi</tspan><tspan fill="#3b82f6">spot</tspan><tspan fill="#0ea5e9" font-weight="600" font-size="34" letter-spacing="-0.5">.com</tspan>
+  </text>
+  <text x="103" y="80" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#64748b" letter-spacing="3.5">
+    DIGITAL INNOVATIONS HUB
   </text>
 </svg>
