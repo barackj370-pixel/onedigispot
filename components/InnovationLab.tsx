@@ -18,7 +18,7 @@ const InnovationLab: React.FC = () => {
   };
 
   return (
-    <section id="innovation-lab" className="py-16 md:py-24 bg-slate-900 text-white overflow-hidden relative">
+    <section id="innovation-lab" className="scroll-mt-24 py-16 md:py-24 bg-slate-900 text-white overflow-hidden relative">
       <div className="absolute top-0 right-0 p-8 md:p-12 opacity-10">
         <div className="text-[120px] md:text-[200px] font-black select-none">LAB</div>
       </div>
