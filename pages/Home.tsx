@@ -58,7 +58,7 @@ const Home: React.FC = () => {
       <InnovationLab />
       
       {/* CTA Section */}
-      <section id="contact" className="py-16 md:py-24 bg-indigo-600 relative overflow-hidden">
+      <section id="contact" className="scroll-mt-24 py-16 md:py-24 bg-indigo-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent"></div>
         </div>
