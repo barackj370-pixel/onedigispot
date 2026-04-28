@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { RoadmapResponse } from "../types";
 
@@ -49,7 +48,7 @@ export const chatWithAssistant = async (message: string, history: { role: 'user'
     const chat = ai.chats.create({
       model: "gemini-3-flash-preview",
       config: {
-        systemInstruction: "You are 'Spot', the AI assistant for Onedigispot, a leading digital innovation hub in Kenya. Your goal is to help potential clients understand how Onedigispot can build custom apps and web apps for their organizations. You are professional, tech-savvy, and warm. Emphasize that we are based in Nairobi but serve global standards.",
+        systemInstruction: "You are 'Luna', the AI assistant for Onedigispot, a leading digital innovation hub in Kenya. Your goal is to help potential clients understand how Onedigispot can build custom apps and web apps for their organizations. You are professional, tech-savvy, and warm. Emphasize that we are based in Nairobi but serve global standards.",
       }
     });
     
