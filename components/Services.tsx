@@ -37,6 +37,12 @@ const services = [
     desc: "Leveraging cutting-edge Large Language Models and computer vision to automate organizational intelligence.",
     icon: "🤖",
     color: "bg-emerald-50"
+  },
+  {
+    title: "Database Design & Integration",
+    desc: "Designing and integrating robust, scalable, and secure databases tailored for your enterprise needs.",
+    icon: "🗄️",
+    color: "bg-teal-50"
   }
 ];
 
