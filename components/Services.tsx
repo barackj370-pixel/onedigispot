@@ -70,7 +70,7 @@ const Services: React.FC = () => {
   };
 
   return (
-    <section id="services" className="py-24 bg-white">
+    <section id="services" className="scroll-mt-24 py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6 md:mb-16 px-4">
           <h2 className="text-indigo-600 font-bold uppercase tracking-widest text-xs md:text-sm mb-3">Our Expertise</h2>
