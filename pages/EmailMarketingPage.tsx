@@ -34,7 +34,7 @@ const EmailMarketingPage: React.FC = () => {
             <div className="mt-12 pt-8 border-t border-slate-100">
               <h3 className="text-xl font-bold text-slate-900 mb-4">Ready to reach the inbox?</h3>
               <Link to="/#contact" className="inline-block bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg">
-                Launch Your Campaign
+                Get In Touch
               </Link>
             </div>
           </div>
