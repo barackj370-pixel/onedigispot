@@ -329,6 +329,162 @@ async function startServer() {
     res.status(200).send("ok");
   });
 
+  // --- PAYMENTS INTEGRATION ---
+
+  // PayPal Create Order
+  app.post("/api/payments/paypal/create-order", async (req, res) => {
+    try {
+      const { amount, currency = "USD", description = "Digital Service" } = req.body;
+      
+      const clientId = process.env.PAYPAL_CLIENT_ID;
+      const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+      
+      if (!clientId || !clientSecret) {
+        return res.status(500).json({ error: "PayPal credentials not configured on the server." });
+      }
+
+      const paypalBaseUrl = process.env.PAYPAL_ENVIRONMENT === 'live' ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+
+      // 1. Get Access Token
+      const tokenResponse = await fetch(`${paypalBaseUrl}/v1/oauth2/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
+        },
+        body: "grant_type=client_credentials",
+      });
+      
+      const tokenData = await tokenResponse.json();
+      const accessToken = tokenData.access_token;
+
+      // 2. Create Order
+      const orderResponse = await fetch(`${paypalBaseUrl}/v2/checkout/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          intent: "CAPTURE",
+          purchase_units: [
+            {
+              description,
+              amount: {
+                currency_code: currency,
+                value: amount.toString(),
+              },
+            },
+          ],
+          application_context: {
+             return_url: `https://${req.get('host')}/payment-success?status=successful`,
+             cancel_url: `https://${req.get('host')}/payment-success?status=cancelled`
+          }
+        }),
+      });
+
+      const orderData = await orderResponse.json();
+      
+      let approveLink = "";
+      if (orderData.links) {
+         const linkStr = orderData.links.find((l: any) => l.rel === "approve");
+         if (linkStr) approveLink = linkStr.href;
+      }
+      
+      res.json({ id: orderData.id, link: approveLink });
+    } catch (error: any) {
+      console.error("PayPal Order Error:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // PayPal Capture Order
+  app.post("/api/payments/paypal/capture-order", async (req, res) => {
+    try {
+      const { orderID } = req.body;
+      
+      const clientId = process.env.PAYPAL_CLIENT_ID;
+      const clientSecret = process.env.PAYPAL_CLIENT_SECRET;
+      const paypalBaseUrl = process.env.PAYPAL_ENVIRONMENT === 'live' ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+
+      const tokenResponse = await fetch(`${paypalBaseUrl}/v1/oauth2/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
+        },
+        body: "grant_type=client_credentials",
+      });
+      
+      const tokenData = await tokenResponse.json();
+      const accessToken = tokenData.access_token;
+
+      const captureResponse = await fetch(`${paypalBaseUrl}/v2/checkout/orders/${orderID}/capture`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const captureData = await captureResponse.json();
+      res.json(captureData);
+    } catch (error: any) {
+      console.error("PayPal Capture Error:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Flutterwave Initialize Payment
+  app.post("/api/payments/flutterwave/init", async (req, res) => {
+    try {
+      const { amount, currency = "USD", email, name, description = "Digital Service" } = req.body;
+      
+      const secretKey = process.env.FLUTTERWAVE_SECRET_KEY;
+      
+      if (!secretKey) {
+         return res.status(500).json({ error: "Flutterwave secret key not configured." });
+      }
+
+      // We dynamically generate the redirect URI based on where the app is currently running
+      const redirectUri = `https://${req.get('host')}/payment-success`;
+
+      const response = await fetch("https://api.flutterwave.com/v3/payments", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${secretKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tx_ref: `tx-${Date.now()}`,
+          amount,
+          currency,
+          redirect_url: redirectUri,
+          customer: {
+            email,
+            name: name || "Customer",
+          },
+          customizations: {
+            title: "Onedigispot",
+            description,
+            logo: `https://${req.get('host')}/logo.svg`
+          }
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.status === "success") {
+        res.json({ link: data.data.link });
+      } else {
+        res.status(400).json({ error: data.message });
+      }
+    } catch (error: any) {
+      console.error("Flutterwave Error:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
