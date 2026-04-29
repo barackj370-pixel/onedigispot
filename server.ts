@@ -435,52 +435,57 @@ async function startServer() {
     }
   });
 
-  // Flutterwave Initialize Payment
-  app.post("/api/payments/flutterwave/init", async (req, res) => {
+  // Paystack Initialize Payment
+  app.post("/api/payments/paystack/init", async (req, res) => {
     try {
-      const { amount, currency = "USD", email, name, description = "Digital Service" } = req.body;
+      const { amount, currency = "KES", email, name, description = "Digital Service" } = req.body;
       
-      const secretKey = process.env.FLUTTERWAVE_SECRET_KEY;
+      const secretKey = process.env.PAYSTACK_SECRET_KEY;
       
       if (!secretKey) {
-         return res.status(500).json({ error: "Flutterwave secret key not configured." });
+         return res.status(500).json({ error: "Paystack secret key not configured." });
       }
 
       // We dynamically generate the redirect URI based on where the app is currently running
-      const redirectUri = `https://${req.get('host')}/payment-success`;
+      const callbackUrl = `https://${req.get('host')}/payment-success?status=successful`;
 
-      const response = await fetch("https://api.flutterwave.com/v3/payments", {
+      const response = await fetch("https://api.paystack.co/transaction/initialize", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${secretKey}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          tx_ref: `tx-${Date.now()}`,
-          amount,
+          amount: Math.round(amount * 100), // Paystack expects amount in Kobo/Cents
           currency,
-          redirect_url: redirectUri,
-          customer: {
-            email,
-            name: name || "Customer",
-          },
-          customizations: {
-            title: "Onedigispot",
-            description,
-            logo: `https://${req.get('host')}/logo.svg`
+          email,
+          callback_url: callbackUrl,
+          metadata: {
+            custom_fields: [
+              {
+                display_name: "Customer Name",
+                variable_name: "customer_name",
+                value: name || "Customer"
+              },
+              {
+                display_name: "Description",
+                variable_name: "description",
+                value: description
+              }
+            ]
           }
         })
       });
 
       const data = await response.json();
       
-      if (data.status === "success") {
-        res.json({ link: data.data.link });
+      if (data.status === true || data.status === "success") {
+        res.json({ link: data.data.authorization_url });
       } else {
         res.status(400).json({ error: data.message });
       }
     } catch (error: any) {
-      console.error("Flutterwave Error:", error);
+      console.error("Paystack Error:", error);
       res.status(500).json({ error: error.message });
     }
   });
