@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/SiteNav';
@@ -39,6 +38,7 @@ import CareersPage from './pages/CareersPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import ThankYouPage from './pages/ThankYouPage';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
 
 function App() {
   return (
@@ -51,6 +51,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="/payment-success" element={<PaymentSuccessPage />} />
             <Route path="/tools" element={<ToolsPage />} />
             
             {/* SEO Landing Pages */}
