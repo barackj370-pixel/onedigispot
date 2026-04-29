@@ -48,7 +48,7 @@ export default function PaymentModal({ isOpen, onClose, amount, itemDescription,
     }
   };
 
-  const handleFlutterwaveCheckout = async () => {
+  const handlePaystackCheckout = async () => {
     if (!email || !name) {
       setError('Please provide your name and email before proceeding.');
       return;
@@ -57,7 +57,7 @@ export default function PaymentModal({ isOpen, onClose, amount, itemDescription,
     setLoading(true);
 
     try {
-      const response = await fetch('/api/payments/flutterwave/init', {
+      const response = await fetch('/api/payments/paystack/init', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -69,9 +69,9 @@ export default function PaymentModal({ isOpen, onClose, amount, itemDescription,
       });
       
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Failed to initialize Flutterwave checkout');
+      if (!response.ok) throw new Error(data.error || 'Failed to initialize Paystack checkout');
       
-      // Redirect to Flutterwave's hosted checkout page
+      // Redirect to Paystack's hosted checkout page
       if (data.link) {
         window.location.href = data.link;
       }
@@ -150,12 +150,12 @@ export default function PaymentModal({ isOpen, onClose, amount, itemDescription,
              </button>
 
              <button 
-               onClick={handleFlutterwaveCheckout}
+               onClick={handlePaystackCheckout}
                disabled={loading}
-               className="w-full flex items-center justify-center space-x-2 bg-[#F5A623] hover:bg-[#e09822] text-white px-4 py-3 rounded-xl font-bold transition-all shadow-md disabled:opacity-50"
+               className="w-full flex items-center justify-center space-x-2 bg-[#09A5DB] hover:bg-[#0790bf] text-white px-4 py-3 rounded-xl font-bold transition-all shadow-md disabled:opacity-50"
              >
-                <img src="https://flutterwave.com/images/logo/logo-mark/full.svg" className="h-5 brightness-0 invert" alt="Flutterwave" />
-                <span>Pay with Mobile Money / Card</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Paystack_Logo.png" className="h-4 brightness-0 invert" alt="Paystack" />
+                <span>Pay with Card / Mobile Money</span>
              </button>
              <p className="text-xs text-center text-slate-500 mt-2">
                Payments process securely via your selected provider.
