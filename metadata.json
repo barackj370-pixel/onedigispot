@@ -1,0 +1,10 @@
+{
+  "name": "Onedigispot - Global Digital Innovations Hub",
+  "description": "A world-class digital innovation hub rooted in Africa, specializing in custom app development, SEO, and AI-powered marketing solutions for global organizations.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "display-capture"
+  ],
+  "majorCapabilities": []
+}
