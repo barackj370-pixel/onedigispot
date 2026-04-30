@@ -11,7 +11,7 @@ const PrivacyPolicyPage: React.FC = () => {
             
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">1. Introduction</h2>
             <p className="mb-6">
-              Welcome to Onedigispot ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.
+              Welcome to Onedigispot ("we," "our," or "us"). We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website or use our applications (including specifically our application "Social Media AI Post Master") and tell you about your privacy rights and how the law protects you.
             </p>
             
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">2. The Data We Collect About You</h2>
