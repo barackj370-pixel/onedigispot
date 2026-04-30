@@ -11,7 +11,7 @@ const TermsOfServicePage: React.FC = () => {
             
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">1. Acceptance of Terms</h2>
             <p className="mb-6">
-              By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services. Any participation in this service will constitute acceptance of this agreement. If you do not agree to abide by the above, please do not use this service.
+              By accessing and using this website, and our suite of applications including specifically "Social Media AI Post Master", you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services. Any participation in this service will constitute acceptance of this agreement. If you do not agree to abide by the above, please do not use this service.
             </p>
             
             <h2 className="text-2xl font-bold text-slate-900 mt-8 mb-4">2. Intellectual Property Rights</h2>
