@@ -155,22 +155,27 @@ export default function ScreenRecorder() {
             <p className="text-slate-500">Free limit: 5 minutes</p>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-             <label className={`flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 transition-colors ${!hasDisplayMediaSupport ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-100'}`}>
-                <input type="checkbox" checked={useScreen} onChange={e => setUseScreen(e.target.checked)} disabled={isRecording || !hasDisplayMediaSupport} className="w-4 h-4 rounded text-indigo-600 border-slate-300 focus:ring-indigo-500 disabled:opacity-50" />
-                <Monitor size={18} className="text-slate-600" />
-                <span className="font-medium text-slate-700">Screen</span>
-             </label>
-             <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
-                <input type="checkbox" checked={useCamera} onChange={e => setUseCamera(e.target.checked)} disabled={isRecording} className="w-4 h-4 rounded text-indigo-600" />
-                <Camera size={18} className="text-slate-600" />
-                <span className="font-medium text-slate-700">Camera</span>
-             </label>
-             <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
-                <input type="checkbox" checked={useAudio} onChange={e => setUseAudio(e.target.checked)} disabled={isRecording} className="w-4 h-4 rounded text-indigo-600" />
-                <Mic size={18} className="text-slate-600" />
-                <span className="font-medium text-slate-700">Audio</span>
-             </label>
+          <div className="flex flex-col gap-2">
+             <div className="flex flex-wrap gap-3">
+                <label title={!hasDisplayMediaSupport ? "Screen recording is not supported on this device/browser" : ""} className={`flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 transition-colors ${!hasDisplayMediaSupport ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-100'}`}>
+                   <input type="checkbox" checked={useScreen} onChange={e => setUseScreen(e.target.checked)} disabled={isRecording || !hasDisplayMediaSupport} className="w-4 h-4 rounded text-indigo-600 border-slate-300 focus:ring-indigo-500 disabled:opacity-50" />
+                   <Monitor size={18} className="text-slate-600" />
+                   <span className="font-medium text-slate-700">Screen</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+                   <input type="checkbox" checked={useCamera} onChange={e => setUseCamera(e.target.checked)} disabled={isRecording} className="w-4 h-4 rounded text-indigo-600" />
+                   <Camera size={18} className="text-slate-600" />
+                   <span className="font-medium text-slate-700">Camera</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
+                   <input type="checkbox" checked={useAudio} onChange={e => setUseAudio(e.target.checked)} disabled={isRecording} className="w-4 h-4 rounded text-indigo-600" />
+                   <Mic size={18} className="text-slate-600" />
+                   <span className="font-medium text-slate-700">Audio</span>
+                </label>
+             </div>
+             {!hasDisplayMediaSupport && (
+                <p className="text-xs text-rose-500 font-medium">Screen recording is not supported on this mobile device/browser.</p>
+             )}
           </div>
         </div>
 
