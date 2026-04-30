@@ -20,7 +20,7 @@ const slides = [
   },
   {
     id: 'ai-tools',
-    badge: 'Free AI Marketing Tools',
+    badge: 'Products',
     title: 'Next-Gen Marketing Engine',
     description: 'Supercharge your growth with our suite of intelligent, automated AI marketing tools. Available for free.',
     accent: 'from-pink-500 to-rose-400',
