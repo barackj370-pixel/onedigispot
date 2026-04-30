@@ -25,6 +25,7 @@ const SiteNav: React.FC = () => {
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-slate-600 hover:text-indigo-600 font-medium transition-colors">Home</Link>
             <a href={isHome ? "#services" : "/#services"} className="text-slate-600 hover:text-indigo-600 font-medium transition-colors">Services</a>
             <Link to="/tools" className="text-indigo-600 font-bold hover:text-indigo-700 transition-colors flex items-center gap-1">
               <span className="relative flex h-2 w-2 mr-1">
@@ -53,6 +54,7 @@ const SiteNav: React.FC = () => {
         {/* Mobile Menu Content */}
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg border-t border-slate-100 py-4 px-4 flex flex-col space-y-4">
+            <Link onClick={() => setMobileMenuOpen(false)} to="/" className="block text-slate-600 hover:text-indigo-600 font-medium transition-colors p-2">Home</Link>
             <a onClick={() => setMobileMenuOpen(false)} href={isHome ? "#services" : "/#services"} className="block text-slate-600 hover:text-indigo-600 font-medium transition-colors p-2">Services</a>
             <Link onClick={() => setMobileMenuOpen(false)} to="/tools" className="text-indigo-600 font-bold hover:text-indigo-700 transition-colors flex items-center gap-2 p-2">
               <span className="relative flex h-2 w-2">
