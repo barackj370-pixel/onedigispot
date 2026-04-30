@@ -7,9 +7,11 @@ export default function ScreenRecorder() {
   const [error, setError] = useState<string | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
 
-  const [useScreen, setUseScreen] = useState(true);
-  const [useCamera, setUseCamera] = useState(false);
+  const [useScreen, setUseScreen] = useState(!!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia));
+  const [useCamera, setUseCamera] = useState(!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia));
   const [useAudio, setUseAudio] = useState(true);
+
+  const hasDisplayMediaSupport = !!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -28,6 +30,9 @@ export default function ScreenRecorder() {
       let cameraStream: MediaStream | null = null;
 
       if (useScreen) {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+          throw new Error("Screen recording is not supported on this device/browser (e.g., most mobile browsers). Please use Camera recording instead.");
+        }
         screenStream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
           audio: useAudio,
@@ -151,8 +156,8 @@ export default function ScreenRecorder() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-             <label className="flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors">
-                <input type="checkbox" checked={useScreen} onChange={e => setUseScreen(e.target.checked)} disabled={isRecording} className="w-4 h-4 rounded text-indigo-600" />
+             <label className={`flex items-center gap-2 cursor-pointer bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 transition-colors ${!hasDisplayMediaSupport ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-100'}`}>
+                <input type="checkbox" checked={useScreen} onChange={e => setUseScreen(e.target.checked)} disabled={isRecording || !hasDisplayMediaSupport} className="w-4 h-4 rounded text-indigo-600 border-slate-300 focus:ring-indigo-500 disabled:opacity-50" />
                 <Monitor size={18} className="text-slate-600" />
                 <span className="font-medium text-slate-700">Screen</span>
              </label>
