@@ -1,6 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import OptinModal from './OptinModal';
 
 interface PricingPlan {
   name: string;
@@ -34,8 +35,33 @@ const ToolLandingLayout: React.FC<ToolLandingLayoutProps> = ({
   pricing,
   faq
 }) => {
+  const [isOptinOpen, setIsOptinOpen] = useState(false);
+  const [redirectTarget, setRedirectTarget] = useState(appLink);
+  const navigate = useNavigate();
+
+  const handleActionClick = (e: React.MouseEvent, targetLink: string) => {
+    // If it's an upgrade link, let them pass directly to payment wall
+    if (targetLink.includes('upgrade=true')) {
+      e.preventDefault();
+      navigate(targetLink);
+      return;
+    }
+    
+    // Otherwise open Opt-in capture Modal
+    e.preventDefault();
+    setRedirectTarget(targetLink);
+    setIsOptinOpen(true);
+  };
+
   return (
     <div className="bg-slate-50 min-h-screen">
+      <OptinModal 
+        isOpen={isOptinOpen} 
+        onClose={() => setIsOptinOpen(false)} 
+        toolName={title}
+        redirectUrl={redirectTarget}
+      />
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
         <div className="inline-block bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold mb-6">
@@ -48,9 +74,13 @@ const ToolLandingLayout: React.FC<ToolLandingLayoutProps> = ({
           {subtitle}
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link to={appLink} className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center">
+          <a 
+            href={appLink} 
+            onClick={(e) => handleActionClick(e, appLink)}
+            className="bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center cursor-pointer"
+          >
             Start Using for Free <ArrowRight className="ml-2 w-5 h-5" />
-          </Link>
+          </a>
           <a href="#pricing" className="bg-white text-slate-900 border border-slate-200 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all flex items-center justify-center">
             View Pricing
           </a>
@@ -129,9 +159,13 @@ const ToolLandingLayout: React.FC<ToolLandingLayoutProps> = ({
                     </li>
                   ))}
                 </ul>
-                <Link to={plan.ctaLink} className={`block w-full py-4 rounded-xl font-bold text-center transition-all ${plan.isPopular ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'}`}>
+                <a 
+                  href={plan.ctaLink}
+                  onClick={(e) => handleActionClick(e, plan.ctaLink)} 
+                  className={`block w-full py-4 rounded-xl font-bold text-center transition-all cursor-pointer ${plan.isPopular ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'}`}
+                >
                   {plan.ctaText}
-                </Link>
+                </a>
               </div>
             ))}
           </div>
