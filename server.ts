@@ -4,6 +4,9 @@ import path from "path";
 import { Resend } from 'resend';
 import multer from 'multer';
 import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const upload = multer();
 
@@ -79,6 +82,7 @@ async function startServer() {
     }
 
     try {
+      let dbDetails = null;
       // Save the lead to Supabase
       if (supabaseUrl && supabaseUrl !== 'https://placeholder.supabase.co' && supabaseKey && supabaseKey !== 'placeholder') {
         const { error: dbError } = await supabase.from('leads').insert({ 
@@ -90,11 +94,13 @@ async function startServer() {
         
         if (dbError) {
           console.error("Supabase Error saving lead:", dbError);
+          dbDetails = dbError;
         } else {
           console.log(`Lead saved to Supabase: ${email} for funnel ${slug}`);
         }
       } else {
         console.warn("Supabase credentials not fully configured. Skipping DB insert.");
+        dbDetails = { message: "Supabase credentials not configured on the server." };
       }
 
       // Send the first email in the sequence using Resend
@@ -122,7 +128,7 @@ async function startServer() {
         console.log("Resend API key not configured or no emails in sequence. Skipping email send.");
       }
 
-      res.json({ success: true });
+      res.json({ success: true, dbError: dbDetails });
     } catch (error) {
       console.error("Error processing opt-in:", error);
       res.status(500).json({ error: "Failed to process opt-in" });
