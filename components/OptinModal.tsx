@@ -17,16 +17,48 @@ const OptinModal: React.FC<OptinModalProps> = ({ isOpen, onClose, toolName, redi
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call for lead capture (to the inbuilt funnel builder/Resend)
-    setTimeout(() => {
+    try {
+      // Configure initial welcome email sequence for the specific tool
+      const funnelData = {
+        emails: [
+          {
+            subject: `Here is your access to ${toolName}! 🚀`,
+            body: `Hi ${name},\n\nWelcome and thanks for signing up to use the ${toolName}!\n\nYou can access the portal directly using this link:\nhttps://onedigispot.com${redirectUrl}\n\nSince you are interested in ${toolName}, we highly recommend checking out our premium upgrades inside the dashboard. It unlocks advanced capacities to accelerate your workflows.\n\nEnjoy the tool!\n\nBest,\nThe Onedigispot Team`
+          }
+        ]
+      };
+
+      // Call the inbuilt funnel backend to register lead & trigger the sequence via Resend
+      const response = await fetch('/api/funnels/optin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          slug: `optin-${toolName.toLowerCase().replace(/\s+/g, '-')}`,
+          name, // Note: the backend currently only processes email, but we can pass name just in case
+          funnelData
+        })
+      });
+
+      if (!response.ok) {
+        console.warn("Opt-in recording failed, but granting access anyway.");
+      } else {
+        const responseData = await response.json();
+        if (responseData.dbError) {
+          console.error("Supabase error from server:", responseData.dbError);
+          alert(`Could not save lead to database. Error: ${JSON.stringify(responseData.dbError.message || responseData.dbError)}`);
+        }
+      }
+    } catch (error) {
+      console.error("Error during opt-in process:", error);
+    } finally {
       setIsLoading(false);
-      // Lead captured! Redirect to the tool
       navigate(redirectUrl);
-    }, 1000);
+    }
   };
 
   return (
