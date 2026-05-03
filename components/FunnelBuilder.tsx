@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { GoogleGenAI, Type } from '@google/genai';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -442,6 +443,11 @@ const FunnelBuilder: React.FC = () => {
               <Clock size={18} className={activeTab === 'emails' ? 'text-indigo-600' : 'text-slate-400'} />
               Email Campaign
             </button>
+            <div className="px-4 py-3 mt-4 mx-4 bg-indigo-50 border border-indigo-100 rounded-xl text-sm text-indigo-800">
+               <p className="font-semibold mb-2 flex items-center"><Mail className="w-4 h-4 mr-1.5" /> Email Marketing</p>
+               <p className="text-xs mb-3 opacity-90">Manage advanced sequences, newsletters, and analytics.</p>
+               <Link to="/app/email-marketing/campaigns" className="block w-full text-center bg-indigo-600 text-white font-medium py-1.5 rounded-lg hover:bg-indigo-700 transition shadow-sm">Open System</Link>
+            </div>
 
             <div className="px-5 pt-6 pb-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
               Settings
