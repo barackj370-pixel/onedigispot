@@ -90,7 +90,7 @@ async function startServer() {
         });
         
         if (dbError) {
-          console.error("Supabase Error saving lead:", dbError);
+          console.error("Supabase Error saving lead:", JSON.stringify(dbError, null, 2));
           dbDetails = dbError;
         } else {
           console.log(`Lead saved to Supabase: ${email} for funnel ${slug}`);
