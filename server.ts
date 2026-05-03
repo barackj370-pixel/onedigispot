@@ -72,7 +72,7 @@ async function startServer() {
 
   // Funnel Opt-in Endpoint
   app.post("/api/funnels/optin", async (req, res) => {
-    const { email, slug, funnelData } = req.body;
+    const { email, name, slug, funnelData } = req.body;
     
     if (!email || !funnelData) {
       return res.status(400).json({ error: "Missing email or funnel data" });
@@ -80,10 +80,11 @@ async function startServer() {
 
     try {
       // Save the lead to Supabase
-      if (supabaseUrl !== 'https://placeholder.supabase.co' && supabaseKey !== 'placeholder') {
+      if (supabaseUrl && supabaseUrl !== 'https://placeholder.supabase.co' && supabaseKey && supabaseKey !== 'placeholder') {
         const { error: dbError } = await supabase.from('leads').insert({ 
           funnel_slug: slug, 
           email: email,
+          name: name,
           created_at: new Date().toISOString()
         });
         
@@ -92,6 +93,8 @@ async function startServer() {
         } else {
           console.log(`Lead saved to Supabase: ${email} for funnel ${slug}`);
         }
+      } else {
+        console.warn("Supabase credentials not fully configured. Skipping DB insert.");
       }
 
       // Send the first email in the sequence using Resend
