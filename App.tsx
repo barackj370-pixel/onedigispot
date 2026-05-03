@@ -46,11 +46,11 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import ThankYouPage from './pages/ThankYouPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 
-import CampaignsPage from './pages/email/CampaignsPage';
-import CampaignBuilderPage from './pages/email/CampaignBuilderPage';
-import NewslettersPage from './pages/email/NewslettersPage';
-import StatisticsPage from './pages/email/StatisticsPage';
-import SettingsPage from './pages/email/SettingsPage';
+import CampaignsPage from '@/pages/email/CampaignsPage';
+import CampaignBuilderPage from '@/pages/email/CampaignBuilderPage';
+import NewslettersPage from '@/pages/email/NewslettersPage';
+import StatisticsPage from '@/pages/email/StatisticsPage';
+import SettingsPage from '@/pages/email/SettingsPage';
 
 function App() {
   return (
