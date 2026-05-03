@@ -46,6 +46,12 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import ThankYouPage from './pages/ThankYouPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 
+import CampaignsPage from './pages/email/CampaignsPage';
+import CampaignBuilderPage from './pages/email/CampaignBuilderPage';
+import NewslettersPage from './pages/email/NewslettersPage';
+import StatisticsPage from './pages/email/StatisticsPage';
+import SettingsPage from './pages/email/SettingsPage';
+
 function App() {
   return (
     <Router>
@@ -78,6 +84,14 @@ function App() {
             <Route path="/app/keyword-generator" element={<KeywordGeneratorPage />} />
             <Route path="/app/content-writer" element={<ContentGeneratorPage />} />
             <Route path="/app/funnel-builder" element={<FunnelBuilderPage />} />
+
+            {/* Email Marketing System */}
+            <Route path="/app/email-marketing/campaigns" element={<CampaignsPage />} />
+            <Route path="/app/email-marketing/campaigns/new" element={<CampaignBuilderPage />} />
+            <Route path="/app/email-marketing/campaigns/:id" element={<CampaignBuilderPage />} />
+            <Route path="/app/email-marketing/newsletters" element={<NewslettersPage />} />
+            <Route path="/app/email-marketing/statistics" element={<StatisticsPage />} />
+            <Route path="/app/email-marketing/settings" element={<SettingsPage />} />
             
             <Route path="/f/:slug" element={<PublishedFunnel />} />
             
