@@ -4,9 +4,6 @@ import path from "path";
 import { Resend } from 'resend';
 import multer from 'multer';
 import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const upload = multer();
 
@@ -17,8 +14,8 @@ async function startServer() {
   app.use(express.json());
 
   // Initialize Supabase for backend use (ensure you have these set in Render)
-  const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
-  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'placeholder';
+  const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
+  const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'placeholder';
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   // API routes FIRST
