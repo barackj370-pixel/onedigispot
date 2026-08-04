@@ -82,18 +82,27 @@ async function startServer() {
       let dbDetails = null;
       // Save the lead to Supabase
       if (supabaseUrl && supabaseUrl !== 'https://placeholder.supabase.co' && supabaseKey && supabaseKey !== 'placeholder') {
-        const { error: dbError } = await supabase.from('leads').insert({ 
-          funnel_slug: slug, 
-          email: email,
-          name: name,
-          created_at: new Date().toISOString()
-        });
-        
-        if (dbError) {
-          console.error("Supabase Error saving lead:", JSON.stringify(dbError, null, 2));
-          dbDetails = dbError;
-        } else {
-          console.log(`Lead saved to Supabase: ${email} for funnel ${slug}`);
+        try {
+          const { error: dbError } = await supabase.from('leads').insert({ 
+            funnel_slug: slug, 
+            email: email,
+            name: name,
+            created_at: new Date().toISOString()
+          });
+          
+          if (dbError) {
+            if (dbError.message?.includes('fetch failed')) {
+               console.warn("Supabase is not fully configured or network is down. Bypassing.");
+            } else {
+               console.error("Supabase Error saving lead:", JSON.stringify(dbError, null, 2));
+            }
+            dbDetails = dbError;
+          } else {
+            console.log(`Lead saved to Supabase: ${email} for funnel ${slug}`);
+          }
+        } catch (dbEx: any) {
+          console.error("Supabase exception saving lead:", dbEx.message || dbEx);
+          dbDetails = { message: "Database connection error." };
         }
       } else {
         console.warn("Supabase credentials not fully configured. Skipping DB insert.");
