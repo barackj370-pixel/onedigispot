@@ -309,10 +309,14 @@ export default function ScreenRecorder() {
     } catch (err: any) {
       if (err.message?.includes('blocked in this preview window') || err.message?.includes('Permission denied')) {
          console.warn(err.message);
+         setError(err.message);
+      } else if (err.message?.includes('Could not start video source') || err.message?.includes('Timeout starting video source') || err.name === 'NotReadableError') {
+         console.warn(err);
+         setError('Failed to access camera or screen. This may happen if another application is using them, or if you need to open the app in a new tab.');
       } else {
-         console.error(err);
+         console.warn(err);
+         setError(err.message || 'Failed to start recording. Please check permissions.');
       }
-      setError(err.message || 'Failed to start recording. Please check permissions.');
     }
   };
 
@@ -504,7 +508,7 @@ export default function ScreenRecorder() {
            <video 
               ref={previewVideoRef} 
               muted 
-              autoplay
+              autoPlay
               playsInline
               className={`w-full h-full object-contain bg-black ${!isRecording ? 'hidden' : ''} ${isPaused ? 'opacity-50 grayscale' : ''}`}
            />
