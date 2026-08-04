@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, Monitor, Mic, Square, Play, Download, Settings, Trash2, Pause, RotateCcw, Check, Sparkles, AlertCircle, ChevronDown, Video as VideoIcon, Scissors } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import AIProcessor from './AIProcessor';
+import AiProcessor from './AiProcessor';
 
 export default function ScreenRecorder() {
   const [isRecording, setIsRecording] = useState(false);
@@ -124,9 +124,11 @@ export default function ScreenRecorder() {
         screenVideo.muted = true;
         screenVideo.playsInline = true;
         hiddenContainer.appendChild(screenVideo);
-        screenVideo.play().catch(e => {
-           if (e.name !== 'AbortError') console.error("Screen video play error:", e);
-        });
+        screenVideo.onloadedmetadata = () => {
+           screenVideo.play().catch(e => {
+              if (e.name !== 'AbortError') console.error("Screen video play error:", e);
+           });
+        };
 
         const cameraVideo = document.createElement('video');
         cameraVideo.srcObject = cameraStream;
@@ -134,9 +136,11 @@ export default function ScreenRecorder() {
         cameraVideo.muted = true;
         cameraVideo.playsInline = true;
         hiddenContainer.appendChild(cameraVideo);
-        cameraVideo.play().catch(e => {
-           if (e.name !== 'AbortError') console.error("Camera video play error:", e);
-        });
+        cameraVideo.onloadedmetadata = () => {
+           cameraVideo.play().catch(e => {
+              if (e.name !== 'AbortError') console.error("Camera video play error:", e);
+           });
+        };
 
         const drawFrame = () => {
            try {
@@ -604,7 +608,7 @@ export default function ScreenRecorder() {
 
       {/* AI Processing Module */}
       {recordedBlob && !isRecording && (
-        <AIProcessor videoBlob={recordedBlob} duration={recordingTime} />
+        <AiProcessor videoBlob={recordedBlob} duration={recordingTime} />
       )}
     </div>
   );
