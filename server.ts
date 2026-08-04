@@ -91,9 +91,7 @@ async function startServer() {
           });
           
           if (dbError) {
-            if (dbError.message?.includes('fetch failed')) {
-               console.warn("Supabase is not fully configured or network is down. Bypassing.");
-            } else {
+            if (!dbError.message?.includes('fetch failed')) {
                console.error("Supabase Error saving lead:", JSON.stringify(dbError, null, 2));
             }
             dbDetails = dbError;
