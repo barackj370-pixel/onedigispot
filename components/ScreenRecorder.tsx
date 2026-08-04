@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, Monitor, Mic, Square, Play, Download, Settings, Trash2, Pause, RotateCcw, Check, Sparkles, AlertCircle, ChevronDown, Video as VideoIcon, Scissors } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import AiProcessor from './AiProcessor';
+import AIProcessor from './AIProcessor';
 
 export default function ScreenRecorder() {
   const [isRecording, setIsRecording] = useState(false);
@@ -107,16 +107,17 @@ export default function ScreenRecorder() {
 
         const hiddenContainer = document.createElement('div');
         hiddenContainer.id = 'screen-recorder-hidden-container';
-        hiddenContainer.style.position = 'fixed';
-        hiddenContainer.style.top = '0';
-        hiddenContainer.style.left = '0';
+        hiddenContainer.style.position = 'absolute';
         hiddenContainer.style.width = '1px';
         hiddenContainer.style.height = '1px';
+        hiddenContainer.style.margin = '-1px';
+        hiddenContainer.style.padding = '0';
         hiddenContainer.style.overflow = 'hidden';
-        hiddenContainer.style.pointerEvents = 'none';
-        hiddenContainer.style.zIndex = '-9999';
-        hiddenContainer.style.opacity = '0.01';
+        hiddenContainer.style.clip = 'rect(0, 0, 0, 0)';
+        hiddenContainer.style.border = '0';
         document.body.appendChild(hiddenContainer);
+        
+        hiddenContainer.appendChild(canvas);
 
         const screenVideo = document.createElement('video');
         screenVideo.srcObject = screenStream;
@@ -124,11 +125,9 @@ export default function ScreenRecorder() {
         screenVideo.muted = true;
         screenVideo.playsInline = true;
         hiddenContainer.appendChild(screenVideo);
-        screenVideo.onloadedmetadata = () => {
-           screenVideo.play().catch(e => {
-              if (e.name !== 'AbortError') console.error("Screen video play error:", e);
-           });
-        };
+        screenVideo.play().catch(e => {
+           if (e.name !== 'AbortError') console.error("Screen video play error:", e);
+        });
 
         const cameraVideo = document.createElement('video');
         cameraVideo.srcObject = cameraStream;
@@ -136,11 +135,9 @@ export default function ScreenRecorder() {
         cameraVideo.muted = true;
         cameraVideo.playsInline = true;
         hiddenContainer.appendChild(cameraVideo);
-        cameraVideo.onloadedmetadata = () => {
-           cameraVideo.play().catch(e => {
-              if (e.name !== 'AbortError') console.error("Camera video play error:", e);
-           });
-        };
+        cameraVideo.play().catch(e => {
+           if (e.name !== 'AbortError') console.error("Camera video play error:", e);
+        });
 
         const drawFrame = () => {
            try {
@@ -149,12 +146,12 @@ export default function ScreenRecorder() {
                ctx.fillRect(0, 0, canvas.width, canvas.height);
                
                // Draw screen (scale to fit or fill, we will do fill for simplicity)
-               if (screenVideo.readyState >= 2 && screenVideo.videoWidth > 0) {
+               if (screenVideo.videoWidth > 0) {
                  ctx.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
                }
                
                // Draw camera in bottom right corner
-               if (cameraVideo.readyState >= 2 && cameraVideo.videoWidth > 0) {
+               if (cameraVideo.videoWidth > 0) {
                  const camWidth = 320;
                  // Fallback to 180 if videoWidth is 0
                  const camHeight = (cameraVideo.videoHeight / cameraVideo.videoWidth) * camWidth || 180;
@@ -507,6 +504,8 @@ export default function ScreenRecorder() {
            <video 
               ref={previewVideoRef} 
               muted 
+              autoplay
+              playsInline
               className={`w-full h-full object-contain bg-black ${!isRecording ? 'hidden' : ''} ${isPaused ? 'opacity-50 grayscale' : ''}`}
            />
 
@@ -608,7 +607,7 @@ export default function ScreenRecorder() {
 
       {/* AI Processing Module */}
       {recordedBlob && !isRecording && (
-        <AiProcessor videoBlob={recordedBlob} duration={recordingTime} />
+        <AIProcessor videoBlob={recordedBlob} duration={recordingTime} />
       )}
     </div>
   );
