@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Camera, Monitor, Mic, Square, Play, Download, Settings, Trash2, Pause, RotateCcw, Check, Sparkles, AlertCircle, ChevronDown, Video as VideoIcon, Scissors } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import AIProcessor from './AIProcessor';
+import AIProcessor from './ProcessorAI';
 
 export default function ScreenRecorder() {
   const [isRecording, setIsRecording] = useState(false);
