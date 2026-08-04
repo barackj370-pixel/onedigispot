@@ -26,6 +26,7 @@ import FunnelBuilderLanding from './pages/landing/FunnelBuilderLanding';
 import ScreenRecorderLanding from './pages/landing/ScreenRecorderLanding';
 import BusinessCardLanding from './pages/landing/BusinessCardLanding';
 import ScreenRecorderPage from './pages/ScreenRecorderPage';
+import VideoEditorPage from './pages/VideoEditorPage';
 import BusinessCardGeneratorPage from './pages/BusinessCardGeneratorPage';
 
 // New Pages
@@ -46,11 +47,11 @@ import TermsOfServicePage from './pages/TermsOfServicePage';
 import ThankYouPage from './pages/ThankYouPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
 
-import CampaignsPage from '@/pages/email/CampaignsPage';
-import CampaignBuilderPage from '@/pages/email/CampaignBuilderPage';
-import NewslettersPage from '@/pages/email/NewslettersPage';
-import StatisticsPage from '@/pages/email/StatisticsPage';
-import SettingsPage from '@/pages/email/SettingsPage';
+import CampaignsPage from './pages/email/CampaignsPage';
+import CampaignBuilderPage from './pages/email/CampaignBuilderPage';
+import NewslettersPage from './pages/email/NewslettersPage';
+import StatisticsPage from './pages/email/StatisticsPage';
+import SettingsPage from './pages/email/SettingsPage';
 
 function App() {
   return (
@@ -79,6 +80,7 @@ function App() {
             {/* Actual Tool Apps */}
             <Route path="/app/logo-maker" element={<LogoDesignerPage />} />
             <Route path="/app/screen-recorder" element={<ScreenRecorderPage />} />
+            <Route path="/app/video-editor" element={<VideoEditorPage />} />
             <Route path="/app/business-card-generator" element={<BusinessCardGeneratorPage />} />
             <Route path="/app/social-media-ai-post-master" element={<SocialMediaAIPage />} />
             <Route path="/app/keyword-generator" element={<KeywordGeneratorPage />} />
