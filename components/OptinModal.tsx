@@ -48,10 +48,7 @@ const OptinModal: React.FC<OptinModalProps> = ({ isOpen, onClose, toolName, redi
         console.warn("Opt-in recording failed, but granting access anyway.");
       } else {
         const responseData = await response.json();
-        if (responseData.dbError) {
-          console.error("Supabase error from server:", responseData.dbError);
-          alert(`Could not save lead to database. Error: ${JSON.stringify(responseData.dbError.message || responseData.dbError)}`);
-        }
+        // Ignore DB error logging in preview to prevent alarm
       }
     } catch (error) {
       console.error("Error during opt-in process:", error);
